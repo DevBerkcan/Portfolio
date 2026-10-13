@@ -9,7 +9,7 @@ import { easeOutExpo } from "@/lib/utils";
 const roles = [
   { title: "Gründer", text: "Gentle Webdesign, GentleBook und VIPSHUTTLE24. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
   { title: "Entwickler", text: "Next.js und React im Frontend, C# .NET und Azure im Backend, Microsoft 365 für alles, was Teams im Alltag nutzen." },
-  { title: "Student", text: "Betriebswirtschaft an der FOM in Düsseldorf. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
+  { title: "Student", text: "Betriebswirtschaft an der FOM in Wuppertal. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
 ];
 
 export default function About() {

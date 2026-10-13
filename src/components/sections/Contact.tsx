@@ -103,7 +103,7 @@ export default function Contact() {
             <div>
               <p className="mb-4 text-ash">Standort</p>
               <p className="text-bone/85">
-                Düsseldorf
+                Wuppertal
                 <br />
                 Projekte in ganz NRW und remote im DACH-Raum
               </p>

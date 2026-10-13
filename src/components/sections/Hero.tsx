@@ -105,7 +105,7 @@ export default function Hero() {
               animate={done ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
               transition={{ delay: 0.9, duration: 1.2, ease: easeOutExpo }}
             >
-              Founder von Gentle Webdesign und Full-Stack-Entwickler in Düsseldorf. Ich baue Websites, Web-Apps und
+              Founder von Gentle Webdesign und Full-Stack-Entwickler in Wuppertal. Ich baue Websites, Web-Apps und
               Cloud-Lösungen, die sich mühelos anfühlen und für Ihr Geschäft arbeiten.
             </motion.p>
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Berk-Can Atesoglu, Founder & Full-Stack-Entwickler in Düsseldorf";
+export const alt = "Berk-Can Atesoglu, Founder & Full-Stack-Entwickler in Wuppertal";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,7 +21,7 @@ export default function OgImage() {
       >
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, opacity: 0.75 }}>
           <span>Founder & Full-Stack-Entwickler</span>
-          <span>Düsseldorf</span>
+          <span>Wuppertal</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", fontSize: 150, fontWeight: 800, lineHeight: 0.85, letterSpacing: -6 }}>
           <span>Berk-Can</span>

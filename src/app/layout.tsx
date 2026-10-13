@@ -9,7 +9,7 @@ import Cursor from "@/components/layout/Cursor";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Founder & Full-Stack-Entwickler in Düsseldorf`,
+    default: `${site.name} | Founder & Full-Stack-Entwickler in Wuppertal`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -46,7 +46,7 @@ const jsonLd = {
   jobTitle: site.role,
   worksFor: { "@type": "Organization", name: "Gentle Webdesign", url: "https://www.gentlewebdesign.de/" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "FOM Hochschule für Oekonomie & Management" },
-  address: { "@type": "PostalAddress", addressLocality: "Düsseldorf", addressCountry: "DE" },
+  address: { "@type": "PostalAddress", addressLocality: "Wuppertal", addressCountry: "DE" },
   knowsAbout: ["Next.js", "React", "TypeScript", "C# .NET", "Azure", "Microsoft 365", "Webdesign", "SaaS"],
   sameAs: socials.map((s) => s.href),
 };

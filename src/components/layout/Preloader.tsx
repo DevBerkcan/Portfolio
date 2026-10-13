@@ -56,7 +56,7 @@ export default function Preloader() {
         >
           <div className="flex items-start justify-between text-sm text-ash">
             <span>Berk-Can Atesoglu</span>
-            <span>Düsseldorf</span>
+            <span>Wuppertal</span>
           </div>
 
           <div className="flex flex-col items-center gap-4">

@@ -93,7 +93,7 @@ function Chauffeur({ c }: { c: Project["palette"] }) {
   return (
     <Frame bg={c[2]} url="vipshuttle24.de">
       <div className="absolute inset-0 p-6">
-        <div className="text-[10px] tracking-[0.3em] text-white/50">DÜSSELDORF</div>
+        <div className="text-[10px] tracking-[0.3em] text-white/50">Wuppertal</div>
         <div className="mt-2 font-display text-3xl font-semibold leading-none" style={{ color: c[1] }}>
           Ankommen
           <br />
@@ -172,7 +172,7 @@ function Agency({ c }: { c: Project["palette"] }) {
       <div className="absolute inset-0 flex flex-col justify-between p-6">
         <div className="flex justify-between text-[10px] text-white/50">
           <span>Gentle Webdesign</span>
-          <span>Düsseldorf</span>
+          <span>Wuppertal</span>
         </div>
         <div className="font-display text-[2.6rem] font-bold leading-[0.85] tracking-tight" style={{ color: c[0] }}>
           Websites

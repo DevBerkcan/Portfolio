@@ -10,10 +10,10 @@ export const site = {
   url: "https://www.berkcanatesoglu.de",
   // TODO: echte Kontaktadresse eintragen
   email: "hallo@berkcanatesoglu.de",
-  city: "Düsseldorf",
+  city: "Wuppertal",
   role: "Founder & Full-Stack-Entwickler",
   description:
-    "Berk-Can Atesoglu — Founder von Gentle Webdesign und Full-Stack-Entwickler in Düsseldorf. Websites, Web-Apps, SaaS und Cloud-Lösungen mit Next.js, C# .NET, Azure und Microsoft 365.",
+    "Berk-Can Atesoglu — Founder von Gentle Webdesign und Full-Stack-Entwickler in Wuppertal. Websites, Web-Apps, SaaS und Cloud-Lösungen mit Next.js, C# .NET, Azure und Microsoft 365.",
 } as const;
 
 export const socials = [
@@ -118,7 +118,7 @@ export const projects: Project[] = [
     slug: "vipshuttle24",
     title: "VIPSHUTTLE24",
     kind: "Eigenes Unternehmen",
-    text: "Premium-Chauffeurservice in Düsseldorf. Zweisprachige Website mit Flotte, Galerie und lokaler Suchmaschinenoptimierung.",
+    text: "Premium-Chauffeurservice in Wuppertal. Zweisprachige Website mit Flotte, Galerie und lokaler Suchmaschinenoptimierung.",
     stack: ["Next.js", "i18n", "SEO"],
     palette: ["#C9A45C", "#F3ECE6", "#0C0C0C"],
     visual: "chauffeur",
@@ -165,7 +165,7 @@ export const ventures: Venture[] = [
   {
     name: "Gentle Webdesign",
     role: "Gründer",
-    text: "Agentur für Webdesign und Softwareentwicklung in Düsseldorf. Next.js-Websites für Kunden, Full-Stack-Anwendungen mit .NET, Azure und Microsoft 365.",
+    text: "Agentur für Webdesign und Softwareentwicklung in Wuppertal. Next.js-Websites für Kunden, Full-Stack-Anwendungen mit .NET, Azure und Microsoft 365.",
     href: "https://www.gentlewebdesign.de/",
     tone: "#FF6A2B",
   },
@@ -179,7 +179,7 @@ export const ventures: Venture[] = [
   {
     name: "VIPSHUTTLE24",
     role: "Inhaber",
-    text: "Premium-Chauffeurservice in Düsseldorf. Diskret, pünktlich und mit einem Auftritt, der zum Anspruch der Fahrgäste passt.",
+    text: "Premium-Chauffeurservice in Wuppertal. Diskret, pünktlich und mit einem Auftritt, der zum Anspruch der Fahrgäste passt.",
     tone: "#C9A45C",
   },
   {
@@ -195,7 +195,7 @@ export const journey = [
   {
     when: "Heute",
     title: "Gentle Webdesign & Gentle Group",
-    place: "Düsseldorf",
+    place: "Wuppertal",
     text: "Führe meine Agentur, baue Kundenprojekte und eigene Produkte wie GentleBook.",
   },
   {
@@ -207,7 +207,7 @@ export const journey = [
   {
     when: "Berufsbegleitend",
     title: "Betriebswirtschaft (B.A.)",
-    place: "FOM Hochschule Düsseldorf",
+    place: "FOM Hochschule Wuppertal",
     text: "Studium neben dem Job — damit Technik immer auch wirtschaftlich Sinn ergibt.",
   },
   {

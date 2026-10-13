@@ -19,7 +19,7 @@ export default function Journey() {
             <Reveal>Werdegang</Reveal>
           </h2>
           <p className="mt-6 max-w-[36ch] text-ash">
-            Von der ersten Zeile Code in Bochum zur eigenen Firmengruppe in Düsseldorf.
+            Von der ersten Zeile Code in Bochum zur eigenen Firmengruppe in Wuppertal.
           </p>
         </div>
 
