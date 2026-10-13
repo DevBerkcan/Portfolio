@@ -25,6 +25,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Auch auf html: mobile Browser verbreitern den Layout-Viewport sonst trotz body-Clip.
+       clip statt hidden, damit kein Scroll-Container entsteht und position: sticky weiter greift. */
+    overflow-x: clip;
   }
 
   body {
