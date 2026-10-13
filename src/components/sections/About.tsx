@@ -41,6 +41,7 @@ export default function About() {
                   <h3 className="font-display text-2xl font-semibold md:text-3xl">{r.title}</h3>
                 </Reveal>
                 <motion.p
+                  data-anim
                   className="mt-3 max-w-[38ch] leading-relaxed text-ash"
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}

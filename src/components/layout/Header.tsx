@@ -59,6 +59,7 @@ export default function Header() {
   return (
     <>
       <motion.header
+        data-anim
         className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-8 md:pt-6"
         initial={{ y: -120 }}
         animate={{ y: done && !hidden ? 0 : -120 }}

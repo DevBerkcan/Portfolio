@@ -28,7 +28,7 @@ export default function Reveal({ children, delay = 0, className }: Props) {
       whileInView="show"
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
     >
-      <motion.span className="block will-change-transform" variants={inner} custom={delay}>
+      <motion.span data-anim className="block will-change-transform" variants={inner} custom={delay}>
         {children}
       </motion.span>
     </motion.span>

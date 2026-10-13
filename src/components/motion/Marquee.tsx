@@ -6,6 +6,7 @@ import {
   useMotionValue,
   useScroll,
   useSpring,
+  useReducedMotion,
   useTransform,
   useVelocity,
 } from "motion/react";
@@ -25,8 +26,11 @@ export default function Marquee({ children, baseVelocity = -2 }: { children: Rea
   const factor = useTransform(smooth, [0, 1000], [0, 4], { clamp: false });
   const x = useTransform(base, (v) => `${wrap(-50, 0, v)}%`);
   const dir = useRef(1);
+  // MotionConfig erfasst useAnimationFrame nicht — Reduced Motion hier selbst prüfen.
+  const reduced = useReducedMotion();
 
   useAnimationFrame((_, delta) => {
+    if (reduced) return;
     let move = dir.current * baseVelocity * (delta / 1000);
     const f = factor.get();
     if (f < 0) dir.current = -1;

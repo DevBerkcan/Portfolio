@@ -2,14 +2,18 @@
 
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useIntro } from "@/hooks/useIntro";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { easeInOutQuart, easeOutExpo } from "@/lib/utils";
 
-/** Zähler 0→100, glimmendes „Ateş", dann Vorhang nach oben direkt in den Hero. */
+/**
+ * Zähler 0→100, glimmendes „Ateş", dann Vorhang nach oben direkt in den Hero.
+ * Ohne JS oder bei Reduced Motion blendet CSS ihn schon vor der Hydration aus (data-preloader).
+ */
 export default function Preloader() {
   const { done, finish } = useIntro();
-  const [visible, setVisible] = useState(!done);
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const lenis = useLenis();
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => String(Math.round(v)).padStart(3, "0"));
@@ -17,10 +21,9 @@ export default function Preloader() {
   const bar = useTransform(count, [0, 100], [0, 1]);
 
   useEffect(() => {
-    if (!visible) return;
+    if (done) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       finish();
-      setVisible(false);
       return;
     }
     lenis?.stop();
@@ -28,14 +31,11 @@ export default function Preloader() {
     const controls = animate(count, 100, {
       duration: 1.7,
       ease: [0.65, 0, 0.35, 1],
-      onComplete: () => {
-        setVisible(false);
-        finish();
-      },
+      onComplete: finish,
     });
     return () => controls.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible, lenis]);
+  }, [done, lenis]);
 
   useEffect(() => {
     if (done) {
@@ -44,11 +44,15 @@ export default function Preloader() {
     }
   }, [done, lenis]);
 
+  // Bei Reduced Motion komplett aushängen — ohne AnimatePresence läuft auch kein Exit-Vorhang.
+  if (reduced) return null;
+
   return (
     <AnimatePresence>
-      {visible && (
+      {!done && (
         <motion.div
           key="preloader"
+          data-preloader
           className="fixed inset-0 z-[100] flex flex-col justify-between bg-ink px-6 py-6 md:px-10 md:py-8"
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           initial={{ clipPath: "inset(0 0 0% 0)" }}

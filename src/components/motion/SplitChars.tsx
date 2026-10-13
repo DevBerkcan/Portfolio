@@ -19,6 +19,7 @@ export default function SplitChars({ text, play, delay = 0, stagger = 0.035, cla
         {Array.from(text).map((char, i) => (
           <motion.span
             key={`${char}-${i}`}
+            data-anim
             className="inline-block will-change-transform"
             initial={{ y: "115%", rotate: 8, opacity: 0 }}
             animate={play ? { y: "0%", rotate: 0, opacity: 1 } : undefined}

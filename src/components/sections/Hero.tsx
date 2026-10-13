@@ -16,6 +16,7 @@ function OrbitBadge({ play }: { play: boolean }) {
   const text = "Websites \u2726 Web-Apps \u2726 Cloud \u2726 Business \u2726 ";
   return (
     <motion.div
+      data-anim
       initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
       animate={play ? { opacity: 1, scale: 1, rotate: 0 } : undefined}
       transition={{ delay: 1.1, duration: 1.4, ease: easeOutExpo }}
@@ -72,6 +73,7 @@ export default function Hero() {
         <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-4 pb-6 pt-28 md:px-8 md:pb-10">
           <motion.div className="absolute right-4 top-28 md:right-8 md:top-32" style={{ opacity: metaOpacity }}>
             <motion.p
+              data-anim
               className="max-w-[15rem] text-right text-sm text-bone/70"
               initial={{ opacity: 0, y: 12 }}
               animate={done ? { opacity: 1, y: 0 } : undefined}
@@ -100,6 +102,7 @@ export default function Hero() {
             style={{ y: metaY, opacity: metaOpacity }}
           >
             <motion.p
+              data-anim
               className="max-w-[40ch] text-base leading-relaxed text-bone/85 md:text-lg"
               initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
               animate={done ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
@@ -110,6 +113,7 @@ export default function Hero() {
             </motion.p>
 
             <motion.div
+              data-anim
               className="flex items-center gap-3 text-sm text-bone/80"
               initial={{ opacity: 0 }}
               animate={done ? { opacity: 1 } : undefined}

@@ -109,6 +109,11 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Schon vor der Hydration ausblenden, sonst blitzt der Preloader kurz auf */
+  [data-preloader] {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

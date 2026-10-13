@@ -131,6 +131,7 @@ function Vertical() {
         {projects.map((p, i) => (
           <motion.div
             key={p.slug}
+            data-anim
             initial={{ opacity: 0, y: 60, clipPath: "inset(12% 0 0 0 round 28px)" }}
             whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0 round 28px)" }}
             viewport={{ once: true, margin: "-10%" }}

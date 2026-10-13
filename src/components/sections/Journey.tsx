@@ -41,6 +41,7 @@ export default function Journey() {
                 transition={{ duration: 0.5 }}
               />
               <motion.div
+                data-anim
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-15%" }}

@@ -8,7 +8,7 @@ function Word({ word, progress, range }: { word: string; progress: MotionValue<n
   const blur = useTransform(progress, range, ["blur(6px)", "blur(0px)"]);
   return (
     <span className="relative mr-[0.25em] inline-block">
-      <motion.span style={{ opacity, filter: blur }}>{word}</motion.span>
+      <motion.span data-anim style={{ opacity, filter: blur }}>{word}</motion.span>
     </span>
   );
 }

@@ -51,10 +51,15 @@ const jsonLd = {
   sameAs: socials.map((s) => s.href),
 };
 
+/** Ohne JS: Preloader weg, alle Intro-/Reveal-Zustände (data-anim) sofort im Endzustand. */
+const noScriptCss =
+  "[data-preloader]{display:none!important}[data-anim]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" className={`${bricolage.variable} ${hanken.variable}`}>
       <body className="grain">
+        <noscript dangerouslySetInnerHTML={{ __html: `<style>${noScriptCss}</style>` }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a
           href="#main"
