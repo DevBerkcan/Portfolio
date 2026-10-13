@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
+import { site } from "@/lib/constants";
 
-export const alt = "Berk-Can Atesoglu, Founder & Full-Stack-Entwickler in Wuppertal";
+export const alt = `${site.name}, ${site.role} in ${site.city}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,12 +21,12 @@ export default function OgImage() {
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, opacity: 0.75 }}>
-          <span>Founder & Full-Stack-Entwickler</span>
-          <span>Wuppertal</span>
+          <span>{site.role}</span>
+          <span>{site.city}</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", fontSize: 150, fontWeight: 800, lineHeight: 0.85, letterSpacing: -6 }}>
-          <span>Berk-Can</span>
-          <span style={{ alignSelf: "flex-end" }}>Atesoglu</span>
+          <span>{site.firstName}</span>
+          <span style={{ alignSelf: "flex-end" }}>{site.lastName}</span>
         </div>
       </div>
     ),

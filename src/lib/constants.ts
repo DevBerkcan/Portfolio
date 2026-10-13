@@ -3,17 +3,110 @@
  * Texte, Links und Projekte hier anpassen — die Komponenten lesen nur aus dieser Datei.
  */
 
+/**
+ * Ihr persönlicher Standort: Texte über Sie, Metadaten, JSON-LD und OG-Bild ziehen ihn von hier.
+ * Orte von Firmen und Hochschule (Projekte, Ventures, Werdegang) stehen bewusst wörtlich dort.
+ */
+const city = "Wuppertal";
+
 export const site = {
   name: "Berk-Can Atesoglu",
   firstName: "Berk-Can",
   lastName: "Atesoglu",
+  initials: "BA",
   url: "https://www.berkcanatesoglu.de",
   // TODO: echte Kontaktadresse eintragen
   email: "hallo@berkcanatesoglu.de",
-  city: "Wuppertal",
+  city,
   role: "Founder & Full-Stack-Entwickler",
-  description:
-    "Berk-Can Atesoglu — Founder von Gentle Webdesign und Full-Stack-Entwickler in Wuppertal. Websites, Web-Apps, SaaS und Cloud-Lösungen mit Next.js, C# .NET, Azure und Microsoft 365.",
+  description: `Berk-Can Atesoglu — Founder von Gentle Webdesign und Full-Stack-Entwickler in ${city}. Websites, Web-Apps, SaaS und Cloud-Lösungen mit Next.js, C# .NET, Azure und Microsoft 365.`,
+} as const;
+
+/** Strukturierte Daten (JSON-LD) für Suchmaschinen. */
+export const person = {
+  worksFor: { name: "Gentle Webdesign", url: "https://www.gentlewebdesign.de/" },
+  alumniOf: "FOM Hochschule für Oekonomie & Management",
+  knowsAbout: ["Next.js", "React", "TypeScript", "C# .NET", "Azure", "Microsoft 365", "Webdesign", "SaaS"],
+} as const;
+
+/**
+ * Alle festen UI-Texte, nach Sektion gruppiert.
+ * Mehrzeilige Überschriften sind Arrays — jede Zeile bekommt ihre eigene Reveal-Maske.
+ */
+export const copy = {
+  skipLink: "Zum Inhalt springen",
+  preloader: {
+    word: "Ateş",
+    meaning: "türkisch für Feuer",
+  },
+  header: {
+    homeLabel: `${site.name}, zur Startseite`,
+    navLabel: "Hauptnavigation",
+    mobileNavLabel: "Mobile Navigation",
+    cta: "Projekt starten",
+    menuOpen: "Menü öffnen",
+    menuClose: "Menü schließen",
+  },
+  hero: {
+    orbit: "Websites ✦ Web-Apps ✦ Cloud ✦ Business ✦ ",
+    noteWord: "Ateş",
+    note: "heißt auf Türkisch Feuer. Ich nehme den Namen wörtlich.",
+    intro: `Founder von Gentle Webdesign und Full-Stack-Entwickler in ${city}. Ich baue Websites, Web-Apps und Cloud-Lösungen, die sich mühelos anfühlen und für Ihr Geschäft arbeiten.`,
+    status: "Offen für neue Projekte",
+    cta: ["Projekt", "starten"],
+    ctaCursor: "Los",
+  },
+  stack: {
+    label: "Technologien",
+  },
+  about: {
+    title: "Über mich",
+  },
+  services: {
+    title: ["Was ich", "baue"],
+    lead: "Vier Felder, ein Anspruch: Lösungen, die gut aussehen, schnell laufen und im Alltag bestehen.",
+  },
+  work: {
+    title: ["Ausgewählte", "Arbeiten"],
+    /** Desktop: schmalere Spalte, daher mit Trennstrich */
+    titleWide: ["Ausge-", "wählte", "Arbeiten"],
+    lead: "Eigene Produkte, Plattformen und Unternehmen.",
+    scrollHint: "Scrollen Sie weiter, die Seite läuft seitwärts.",
+    cursorLink: "Ansehen",
+    cursorStatic: "Projekt",
+  },
+  ventures: {
+    title: ["Mehr als", "ein Job"],
+    lead: "Ich gründe, betreibe und baue. Jede Firma hier ist mein eigenes Projekt, und jede hat mich als Entwickler besser gemacht.",
+    visit: "Website besuchen",
+  },
+  journey: {
+    title: "Werdegang",
+    lead: `Von der ersten Zeile Code in Bochum zur eigenen Firmengruppe in ${city}.`,
+  },
+  contact: {
+    eyebrow: "Kontakt",
+    title: ["Bereit, etwas", "zu entfachen?"],
+    text: "Erzählen Sie mir von Ihrem Vorhaben, ob neue Website, eigene Software oder ein Prozess, der endlich automatisch laufen soll. Ich melde mich zeitnah mit einer ehrlichen Einschätzung.",
+    mailCta: "E-Mail schreiben",
+    mailSubject: "Projektanfrage",
+    copied: "Adresse kopiert",
+    networks: "Netzwerke",
+    location: "Standort",
+    reach: "Projekte in ganz NRW und remote im DACH-Raum",
+    legalNavLabel: "Rechtliches",
+    backToTop: "Nach oben",
+  },
+  legal: {
+    imprint: "Impressum",
+    privacy: "Datenschutz",
+    privacyTitle: "Datenschutzerklärung",
+    back: "Zurück zur Startseite",
+  },
+  notFound: {
+    title: "Hier ist nur Asche.",
+    text: "Diese Seite gibt es nicht (mehr). Zurück zur Startseite, dort brennt es noch.",
+  },
 } as const;
 
 export const socials = [
@@ -48,6 +141,12 @@ export const stack = [
   "Teams",
   "Power Automate",
   "Vercel",
+] as const;
+
+export const roles = [
+  { title: "Gründer", text: "Gentle Webdesign, GentleBook und VIPSHUTTLE24. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
+  { title: "Entwickler", text: "Next.js und React im Frontend, C# .NET und Azure im Backend, Microsoft 365 für alles, was Teams im Alltag nutzen." },
+  { title: "Student", text: "Betriebswirtschaft an der FOM in Wuppertal. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
 ] as const;
 
 export const aboutText =
@@ -92,6 +191,8 @@ export type Project = {
   /** Farben für die generierte Vorschau-Grafik */
   palette: [string, string, string];
   visual: "booking" | "dashboard" | "chauffeur" | "vault" | "crm" | "agency";
+  /** Texte in der Vorschau-Grafik: Adresszeile des Browserrahmens und ggf. sichtbare Zeilen */
+  preview: { url: string; lines?: readonly string[] };
 };
 
 export const projects: Project[] = [
@@ -104,6 +205,7 @@ export const projects: Project[] = [
     href: "https://gentlebook.app",
     palette: ["#6355E4", "#17A398", "#14162B"],
     visual: "booking",
+    preview: { url: "gentlebook.app", lines: ["Termin buchen"] },
   },
   {
     slug: "daily-gourmet",
@@ -113,6 +215,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "shadcn/ui", "C# .NET"],
     palette: ["#1B5FA0", "#E12B76", "#2FAE94"],
     visual: "dashboard",
+    preview: { url: "daily-gourmet.app" },
   },
   {
     slug: "vipshuttle24",
@@ -122,6 +225,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "i18n", "SEO"],
     palette: ["#C9A45C", "#F3ECE6", "#0C0C0C"],
     visual: "chauffeur",
+    preview: { url: "vipshuttle24.de", lines: ["Wuppertal", "Ankommen", "mit Stil."] },
   },
   {
     slug: "gentletrack",
@@ -131,6 +235,7 @@ export const projects: Project[] = [
     stack: ["React", "ASP.NET Core", "SQL Server", "JWT"],
     palette: ["#FF6A2B", "#FFC36E", "#1A1518"],
     visual: "crm",
+    preview: { url: "gentletrack.app" },
   },
   {
     slug: "familyvault",
@@ -140,6 +245,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "PostgreSQL", "Web Crypto"],
     palette: ["#5EEAD4", "#A78BFA", "#0B1220"],
     visual: "vault",
+    preview: { url: "familyvault.app" },
   },
   {
     slug: "gentle-webdesign",
@@ -150,6 +256,7 @@ export const projects: Project[] = [
     href: "https://www.gentlewebdesign.de/",
     palette: ["#F3ECE6", "#FF6A2B", "#141012"],
     visual: "agency",
+    preview: { url: "gentlewebdesign.de", lines: ["Gentle Webdesign", "Wuppertal", "Websites", "mit", "Gefühl."] },
   },
 ];
 

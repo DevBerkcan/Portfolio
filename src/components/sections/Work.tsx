@@ -2,7 +2,7 @@
 
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
-import { projects, type Project } from "@/lib/constants";
+import { copy, projects, type Project } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
 import ProjectVisual from "@/components/ui/ProjectVisual";
 import Reveal from "@/components/motion/Reveal";
@@ -15,7 +15,9 @@ function ProjectCard({ project, index, progress }: { project: Project; index: nu
   return (
     <article className="group relative flex w-full shrink-0 flex-col gap-6 md:w-[min(62vw,980px)]">
       <Wrapper
-        {...(project.href ? { href: project.href, target: "_blank", rel: "noreferrer", "data-cursor": "Ansehen" } : { "data-cursor": "Projekt" })}
+        {...(project.href
+          ? { href: project.href, target: "_blank", rel: "noreferrer", "data-cursor": copy.work.cursorLink }
+          : { "data-cursor": copy.work.cursorStatic })}
         className="relative block aspect-[16/11] overflow-hidden rounded-[1.75rem] bg-smoke p-4 md:aspect-[16/10] md:p-8"
       >
         <div
@@ -95,12 +97,14 @@ function Horizontal() {
         <motion.div ref={track} className="flex items-center gap-[6vw] pl-8 pr-[10vw] will-change-transform" style={{ x }}>
           <div className="flex w-[34vw] shrink-0 flex-col justify-between self-stretch py-4">
             <h2 id="work-title" className="text-[clamp(3rem,7.5vw,8rem)] font-bold leading-[0.88] tracking-[-0.045em]">
-              <Reveal>Ausge-</Reveal>
-              <Reveal delay={0.06}>wählte</Reveal>
-              <Reveal delay={0.12}>Arbeiten</Reveal>
+              {copy.work.titleWide.map((line, i) => (
+                <Reveal key={line} delay={i * 0.06}>
+                  {line}
+                </Reveal>
+              ))}
             </h2>
             <p className="max-w-[30ch] text-ash">
-              Eigene Produkte, Plattformen und Unternehmen. Scrollen Sie weiter, die Seite läuft seitwärts.
+              {copy.work.lead} {copy.work.scrollHint}
             </p>
           </div>
           {projects.map((p, i) => (
@@ -125,10 +129,13 @@ function Vertical() {
   return (
     <section aria-labelledby="work-title-m" className="bg-ink px-4 py-24">
       <h2 id="work-title-m" className="mb-6 text-[clamp(3rem,14vw,5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
-        <Reveal>Ausgewählte</Reveal>
-        <Reveal delay={0.06}>Arbeiten</Reveal>
+        {copy.work.title.map((line, i) => (
+          <Reveal key={line} delay={i * 0.06}>
+            {line}
+          </Reveal>
+        ))}
       </h2>
-      <p className="mb-14 max-w-[34ch] text-ash">Eigene Produkte, Plattformen und Unternehmen.</p>
+      <p className="mb-14 max-w-[34ch] text-ash">{copy.work.lead}</p>
       <div className="flex flex-col gap-20">
         {projects.map((p, i) => (
           <motion.div

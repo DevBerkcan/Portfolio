@@ -3,14 +3,8 @@
 import { motion } from "motion/react";
 import ScrollWords from "@/components/motion/ScrollWords";
 import Reveal from "@/components/motion/Reveal";
-import { aboutText } from "@/lib/constants";
+import { aboutText, copy, roles } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
-
-const roles = [
-  { title: "Gründer", text: "Gentle Webdesign, GentleBook und VIPSHUTTLE24. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
-  { title: "Entwickler", text: "Next.js und React im Frontend, C# .NET und Azure im Backend, Microsoft 365 für alles, was Teams im Alltag nutzen." },
-  { title: "Student", text: "Betriebswirtschaft an der FOM in Wuppertal. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
-];
 
 export default function About() {
   return (
@@ -18,7 +12,7 @@ export default function About() {
       <div className="mx-auto grid max-w-[1600px] gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
         <div className="md:sticky md:top-32 md:self-start">
           <h2 id="about-title" className="text-sm font-normal text-ash" style={{ fontFamily: "var(--font-body)" }}>
-            Über mich
+            {copy.about.title}
           </h2>
         </div>
         <div>

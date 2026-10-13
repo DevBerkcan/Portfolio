@@ -5,7 +5,7 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
 import { useRef } from "react";
 import { useIntro } from "@/hooks/useIntro";
-import { site } from "@/lib/constants";
+import { copy, site } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
 import SplitChars from "@/components/motion/SplitChars";
 import Magnetic from "@/components/motion/Magnetic";
@@ -13,7 +13,7 @@ import Magnetic from "@/components/motion/Magnetic";
 const EmberField = dynamic(() => import("@/components/webgl/EmberField"), { ssr: false });
 
 function OrbitBadge({ play }: { play: boolean }) {
-  const text = "Websites \u2726 Web-Apps \u2726 Cloud \u2726 Business \u2726 ";
+  const text = copy.hero.orbit;
   return (
     <motion.div
       data-anim
@@ -79,8 +79,7 @@ export default function Hero() {
               animate={done ? { opacity: 1, y: 0 } : undefined}
               transition={{ delay: 1.2, duration: 1, ease: easeOutExpo }}
             >
-              <span className="font-display text-base text-gold">Ateş</span> heißt auf Türkisch Feuer. Ich nehme den
-              Namen wörtlich.
+              <span className="font-display text-base text-gold">{copy.hero.noteWord}</span> {copy.hero.note}
             </motion.p>
           </motion.div>
 
@@ -108,8 +107,7 @@ export default function Hero() {
               animate={done ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
               transition={{ delay: 0.9, duration: 1.2, ease: easeOutExpo }}
             >
-              Founder von Gentle Webdesign und Full-Stack-Entwickler in Wuppertal. Ich baue Websites, Web-Apps und
-              Cloud-Lösungen, die sich mühelos anfühlen und für Ihr Geschäft arbeiten.
+              {copy.hero.intro}
             </motion.p>
 
             <motion.div
@@ -123,7 +121,7 @@ export default function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ember opacity-70" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-ember" />
               </span>
-              Offen für neue Projekte
+              {copy.hero.status}
             </motion.div>
 
             <div className="flex items-center gap-6">
@@ -131,14 +129,14 @@ export default function Hero() {
                 <a
                   href="#contact"
                   onClick={toContact}
-                  data-cursor="Los"
+                  data-cursor={copy.hero.ctaCursor}
                   className="group relative grid h-28 w-28 place-items-center overflow-hidden rounded-full bg-bone text-center text-sm font-semibold leading-tight text-ink md:h-32 md:w-32"
                 >
                   <span className="absolute inset-0 translate-y-full rounded-full bg-ember transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0" />
                   <span className="relative">
-                    Projekt
+                    {copy.hero.cta[0]}
                     <br />
-                    starten
+                    {copy.hero.cta[1]}
                   </span>
                 </a>
               </Magnetic>

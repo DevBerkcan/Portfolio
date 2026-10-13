@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef } from "react";
-import { ventures, type Venture } from "@/lib/constants";
+import { copy, ventures, type Venture } from "@/lib/constants";
 import Reveal from "@/components/motion/Reveal";
 
 function Card({ v, i, total, progress }: { v: Venture; i: number; total: number; progress: MotionValue<number> }) {
@@ -35,7 +35,7 @@ function Card({ v, i, total, progress }: { v: Venture; i: number; total: number;
                 rel="noreferrer"
                 className="mt-6 inline-flex items-center gap-2 border-b border-bone/40 pb-1 text-sm transition-colors hover:border-ember hover:text-ember"
               >
-                Website besuchen
+                {copy.ventures.visit}
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
                   <path d="M7 17 17 7M8 7h9v9" />
                 </svg>
@@ -56,13 +56,13 @@ export default function Ventures() {
     <section id="ventures" aria-labelledby="ventures-title" className="relative bg-ink pt-28 md:pt-40">
       <div className="mx-auto max-w-[1600px] px-4 md:px-8">
         <h2 id="ventures-title" className="text-[clamp(3rem,9vw,8.5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
-          <Reveal>Mehr als</Reveal>
-          <Reveal delay={0.08}>ein Job</Reveal>
+          {copy.ventures.title.map((line, i) => (
+            <Reveal key={line} delay={i * 0.08}>
+              {line}
+            </Reveal>
+          ))}
         </h2>
-        <p className="mt-6 max-w-[44ch] text-ash">
-          Ich gründe, betreibe und baue. Jede Firma hier ist mein eigenes Projekt, und jede hat mich als Entwickler
-          besser gemacht.
-        </p>
+        <p className="mt-6 max-w-[44ch] text-ash">{copy.ventures.lead}</p>
       </div>
       <div ref={ref} className="relative mt-8">
         {ventures.map((v, i) => (

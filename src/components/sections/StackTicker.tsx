@@ -1,7 +1,7 @@
 "use client";
 
 import Marquee from "@/components/motion/Marquee";
-import { stack } from "@/lib/constants";
+import { copy, stack } from "@/lib/constants";
 
 function Spark() {
   return (
@@ -13,7 +13,7 @@ function Spark() {
 
 export default function StackTicker() {
   return (
-    <section aria-label="Technologien" className="relative z-10 -mt-px border-y border-line bg-ink py-6 md:py-8">
+    <section aria-label={copy.stack.label} className="relative z-10 -mt-px border-y border-line bg-ink py-6 md:py-8">
       <Marquee baseVelocity={-1.6}>
         {stack.map((s) => (
           <span key={s} className="flex items-center font-display text-[clamp(1.75rem,4.5vw,3.75rem)] font-semibold tracking-tight">

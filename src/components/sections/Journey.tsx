@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useSpring } from "motion/react";
 import { useRef } from "react";
-import { journey } from "@/lib/constants";
+import { copy, journey } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
 import Reveal from "@/components/motion/Reveal";
 
@@ -16,11 +16,9 @@ export default function Journey() {
       <div className="mx-auto grid max-w-[1600px] gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
         <div className="md:sticky md:top-32 md:self-start">
           <h2 id="journey-title" className="text-[clamp(3rem,8vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
-            <Reveal>Werdegang</Reveal>
+            <Reveal>{copy.journey.title}</Reveal>
           </h2>
-          <p className="mt-6 max-w-[36ch] text-ash">
-            Von der ersten Zeile Code in Bochum zur eigenen Firmengruppe in Wuppertal.
-          </p>
+          <p className="mt-6 max-w-[36ch] text-ash">{copy.journey.lead}</p>
         </div>
 
         <ol ref={ref} className="relative pl-10 md:pl-16">

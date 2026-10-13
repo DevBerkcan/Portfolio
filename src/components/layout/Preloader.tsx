@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { introAlreadyPlayed, useIntro } from "@/hooks/useIntro";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { copy, site } from "@/lib/constants";
 import { easeInOutQuart, easeOutExpo } from "@/lib/utils";
 
 /**
@@ -52,8 +53,8 @@ export default function Preloader() {
           transition={{ duration: 1, ease: easeInOutQuart }}
         >
           <div className="flex items-start justify-between text-sm text-ash">
-            <span>Berk-Can Atesoglu</span>
-            <span>Wuppertal</span>
+            <span>{site.name}</span>
+            <span>{site.city}</span>
           </div>
 
           <div className="flex flex-col items-center gap-4">
@@ -65,7 +66,7 @@ export default function Preloader() {
               transition={{ duration: 1.2, ease: easeOutExpo }}
             >
               {/* Eigene Ebene: die filter-Animation von .text-glow würde sonst den Blur-Einstieg überschreiben */}
-              <span className="text-glow">Ateş</span>
+              <span className="text-glow">{copy.preloader.word}</span>
             </motion.span>
             <motion.span
               className="text-sm text-ash"
@@ -73,7 +74,7 @@ export default function Preloader() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              türkisch für Feuer
+              {copy.preloader.meaning}
             </motion.span>
           </div>
 

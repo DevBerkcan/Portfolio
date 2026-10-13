@@ -19,19 +19,22 @@ function Frame({ children, bg, url }: { children: React.ReactNode; bg: string; u
   );
 }
 
-function Booking({ c }: { c: Project["palette"] }) {
+/** c = Palette, p = Texte der Vorschau (aus constants.ts) */
+type VisualProps = { c: Project["palette"]; p: Project["preview"] };
+
+function Booking({ c, p }: VisualProps) {
   const slots = [
     [0, 1, 2], [1, 0, 3], [2, 2, 2], [3, 1, 1], [4, 3, 2], [0, 4, 2], [2, 5, 1], [4, 0, 1], [1, 4, 2], [3, 3, 2],
   ];
   return (
-    <Frame bg={c[2]} url="gentlebook.app">
+    <Frame bg={c[2]} url={p.url}>
       <div className="absolute inset-0 grid grid-cols-[1fr_2.2fr] gap-4 p-5">
         <div className="flex flex-col gap-3">
           <div className="h-10 w-10 rounded-xl" style={{ background: `linear-gradient(135deg, ${c[0]}, ${c[1]})` }} />
           <div className="h-3 w-3/4 rounded bg-white/70" />
           <div className="h-2 w-1/2 rounded bg-white/30" />
           <div className="mt-auto rounded-xl p-3 text-[10px] font-semibold text-white" style={{ background: `linear-gradient(135deg, ${c[0]}, ${c[1]})` }}>
-            Termin buchen
+            {p.lines?.[0]}
           </div>
         </div>
         <div className="relative grid grid-cols-5 grid-rows-6 gap-1.5 rounded-xl bg-white/5 p-2">
@@ -53,10 +56,10 @@ function Booking({ c }: { c: Project["palette"] }) {
   );
 }
 
-function Dashboard({ c }: { c: Project["palette"] }) {
+function Dashboard({ c, p }: VisualProps) {
   const bars = [38, 62, 48, 80, 56, 92, 70];
   return (
-    <Frame bg="#0E1A2B" url="daily-gourmet.app">
+    <Frame bg="#0E1A2B" url={p.url}>
       <div className="absolute inset-0 grid grid-cols-[0.5fr_2fr] gap-4 p-5">
         <div className="flex flex-col gap-2.5 rounded-xl bg-white/5 p-3">
           <div className="mb-2 grid grid-cols-2 gap-1">
@@ -89,15 +92,15 @@ function Dashboard({ c }: { c: Project["palette"] }) {
   );
 }
 
-function Chauffeur({ c }: { c: Project["palette"] }) {
+function Chauffeur({ c, p }: VisualProps) {
   return (
-    <Frame bg={c[2]} url="vipshuttle24.de">
+    <Frame bg={c[2]} url={p.url}>
       <div className="absolute inset-0 p-6">
-        <div className="text-[10px] tracking-[0.3em] text-white/50">Wuppertal</div>
+        <div className="text-[10px] tracking-[0.3em] text-white/50">{p.lines?.[0]}</div>
         <div className="mt-2 font-display text-3xl font-semibold leading-none" style={{ color: c[1] }}>
-          Ankommen
+          {p.lines?.[1]}
           <br />
-          <span style={{ color: c[0] }}>mit Stil.</span>
+          <span style={{ color: c[0] }}>{p.lines?.[2]}</span>
         </div>
         <svg viewBox="0 0 400 160" className="absolute bottom-6 left-0 w-full" fill="none">
           <path d="M10 140 C 90 140, 110 60, 200 70 S 330 20, 390 30" stroke={c[0]} strokeWidth="2" strokeDasharray="6 6" />
@@ -117,10 +120,10 @@ function Chauffeur({ c }: { c: Project["palette"] }) {
   );
 }
 
-function Crm({ c }: { c: Project["palette"] }) {
+function Crm({ c, p }: VisualProps) {
   const cols = [3, 2, 4];
   return (
-    <Frame bg={c[2]} url="gentletrack.app">
+    <Frame bg={c[2]} url={p.url}>
       <div className="absolute inset-0 grid grid-cols-3 gap-3 p-5">
         {cols.map((n, ci) => (
           <div key={ci} className="flex flex-col gap-2 rounded-xl bg-white/5 p-2.5">
@@ -142,9 +145,9 @@ function Crm({ c }: { c: Project["palette"] }) {
   );
 }
 
-function Vault({ c }: { c: Project["palette"] }) {
+function Vault({ c, p }: VisualProps) {
   return (
-    <Frame bg={c[2]} url="familyvault.app">
+    <Frame bg={c[2]} url={p.url}>
       <div className="absolute inset-0 grid place-items-center overflow-hidden">
         {[220, 170, 120].map((s, i) => (
           <div
@@ -166,18 +169,18 @@ function Vault({ c }: { c: Project["palette"] }) {
   );
 }
 
-function Agency({ c }: { c: Project["palette"] }) {
+function Agency({ c, p }: VisualProps) {
   return (
-    <Frame bg={c[2]} url="gentlewebdesign.de">
+    <Frame bg={c[2]} url={p.url}>
       <div className="absolute inset-0 flex flex-col justify-between p-6">
         <div className="flex justify-between text-[10px] text-white/50">
-          <span>Gentle Webdesign</span>
-          <span>Wuppertal</span>
+          <span>{p.lines?.[0]}</span>
+          <span>{p.lines?.[1]}</span>
         </div>
         <div className="font-display text-[2.6rem] font-bold leading-[0.85] tracking-tight" style={{ color: c[0] }}>
-          Websites
+          {p.lines?.[2]}
           <br />
-          mit <span style={{ color: c[1] }}>Gefühl.</span>
+          {p.lines?.[3]} <span style={{ color: c[1] }}>{p.lines?.[4]}</span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {[0, 1, 2].map((i) => (
@@ -195,18 +198,19 @@ function Agency({ c }: { c: Project["palette"] }) {
 
 export default function ProjectVisual({ project }: { project: Project }) {
   const c = project.palette;
+  const p = project.preview;
   switch (project.visual) {
     case "booking":
-      return <Booking c={c} />;
+      return <Booking c={c} p={p} />;
     case "dashboard":
-      return <Dashboard c={c} />;
+      return <Dashboard c={c} p={p} />;
     case "chauffeur":
-      return <Chauffeur c={c} />;
+      return <Chauffeur c={c} p={p} />;
     case "crm":
-      return <Crm c={c} />;
+      return <Crm c={c} p={p} />;
     case "vault":
-      return <Vault c={c} />;
+      return <Vault c={c} p={p} />;
     case "agency":
-      return <Agency c={c} />;
+      return <Agency c={c} p={p} />;
   }
 }

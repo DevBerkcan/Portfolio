@@ -4,7 +4,7 @@ import { motion, useMotionValue, useScroll, useSpring, useTransform } from "moti
 import { useLenis } from "lenis/react";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { site, socials } from "@/lib/constants";
+import { copy, site, socials } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
 import Magnetic from "@/components/motion/Magnetic";
 import Reveal from "@/components/motion/Reveal";
@@ -26,7 +26,7 @@ export default function Contact() {
   const bigX = useTransform(scrollYProgress, [0, 1], ["12%", "0%"]);
   const bigOpacity = useTransform(scrollYProgress, [0.4, 1], [0, 1]);
 
-  const copy = async () => {
+  const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(site.email);
       setCopied(true);
@@ -56,37 +56,34 @@ export default function Contact() {
       </motion.div>
 
       <div className="relative mx-auto max-w-[1600px]">
-        <p className="mb-8 text-ash">Kontakt</p>
+        <p className="mb-8 text-ash">{copy.contact.eyebrow}</p>
         <h2 id="contact-title" className="text-[clamp(3.2rem,11vw,11rem)] font-bold leading-[0.86] tracking-[-0.05em]">
-          <Reveal>Bereit, etwas</Reveal>
+          <Reveal>{copy.contact.title[0]}</Reveal>
           <Reveal delay={0.08}>
-            <span className="text-glow">zu entfachen?</span>
+            <span className="text-glow">{copy.contact.title[1]}</span>
           </Reveal>
         </h2>
 
         <div className="mt-16 grid gap-12 border-t border-line pt-10 md:mt-24 md:grid-cols-[1.4fr_1fr]">
           <div>
-            <p className="max-w-[44ch] text-lg leading-relaxed text-bone/80">
-              Erzählen Sie mir von Ihrem Vorhaben, ob neue Website, eigene Software oder ein Prozess, der endlich
-              automatisch laufen soll. Ich melde mich zeitnah mit einer ehrlichen Einschätzung.
-            </p>
+            <p className="max-w-[44ch] text-lg leading-relaxed text-bone/80">{copy.contact.text}</p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Magnetic strength={0.3}>
                 <a
-                  href={`mailto:${site.email}?subject=${encodeURIComponent("Projektanfrage")}`}
+                  href={`mailto:${site.email}?subject=${encodeURIComponent(copy.contact.mailSubject)}`}
                   className="group relative inline-flex h-16 items-center overflow-hidden rounded-full bg-ember px-8 text-base font-semibold text-ink"
                 >
                   <span className="absolute inset-0 translate-y-full bg-gold transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0" />
-                  <span className="relative">E-Mail schreiben</span>
+                  <span className="relative">{copy.contact.mailCta}</span>
                 </a>
               </Magnetic>
               <button
                 type="button"
-                onClick={copy}
+                onClick={copyEmail}
                 className="inline-flex h-16 items-center rounded-full border border-line px-7 text-base text-bone/90 transition-colors hover:border-bone/50"
               >
                 <motion.span key={copied ? "c" : "e"} initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.4, ease: easeOutExpo }}>
-                  {copied ? "Adresse kopiert" : site.email}
+                  {copied ? copy.contact.copied : site.email}
                 </motion.span>
               </button>
             </div>
@@ -94,7 +91,7 @@ export default function Contact() {
 
           <div className="grid grid-cols-2 gap-8 text-sm">
             <div>
-              <p className="mb-4 text-ash">Netzwerke</p>
+              <p className="mb-4 text-ash">{copy.contact.networks}</p>
               <ul className="space-y-2">
                 {socials.map((s) => (
                   <li key={s.href}>
@@ -109,11 +106,11 @@ export default function Contact() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-ash">Standort</p>
+              <p className="mb-4 text-ash">{copy.contact.location}</p>
               <p className="text-bone/85">
-                Wuppertal
+                {site.city}
                 <br />
-                Projekte in ganz NRW und remote im DACH-Raum
+                {copy.contact.reach}
               </p>
             </div>
           </div>
@@ -123,19 +120,19 @@ export default function Contact() {
       <footer className="relative mx-auto mt-28 max-w-[1600px] md:mt-40">
         <div className="flex flex-col gap-4 border-t border-line py-6 text-sm text-ash md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} {site.name}</p>
-          <nav aria-label="Rechtliches" className="flex gap-6">
+          <nav aria-label={copy.contact.legalNavLabel} className="flex gap-6">
             <Link href="/impressum" className="hover:text-bone">
-              Impressum
+              {copy.legal.imprint}
             </Link>
             <Link href="/datenschutz" className="hover:text-bone">
-              Datenschutz
+              {copy.legal.privacy}
             </Link>
             <button
               type="button"
               onClick={() => (lenis ? lenis.scrollTo(0, { duration: 2.2 }) : window.scrollTo({ top: 0, behavior: "smooth" }))}
               className="hover:text-bone"
             >
-              Nach oben
+              {copy.contact.backToTop}
             </button>
           </nav>
         </div>
@@ -144,7 +141,7 @@ export default function Contact() {
           className="pointer-events-none select-none whitespace-nowrap font-display text-[19vw] font-bold leading-[0.75] tracking-[-0.06em] text-bone/[0.06] md:text-[18.5vw]"
           style={{ x: bigX, opacity: bigOpacity }}
         >
-          Atesoglu
+          {site.lastName}
         </motion.p>
       </footer>
     </section>

@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "motion/react";
 import { useState } from "react";
 import Reveal from "@/components/motion/Reveal";
-import { services } from "@/lib/constants";
+import { copy, services } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
 
 export default function Services() {
@@ -33,14 +33,13 @@ export default function Services() {
       <div className="relative mx-auto max-w-[1600px]">
         <div className="mb-16 flex flex-col justify-between gap-6 md:mb-24 md:flex-row md:items-end">
           <h2 id="services-title" className="text-[clamp(3rem,9vw,8.5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
-            <Reveal>Was ich</Reveal>
-            <Reveal delay={0.08}>
-              baue
-            </Reveal>
+            {copy.services.title.map((line, i) => (
+              <Reveal key={line} delay={i * 0.08}>
+                {line}
+              </Reveal>
+            ))}
           </h2>
-          <p className="max-w-[34ch] text-ash md:text-right">
-            Vier Felder, ein Anspruch: Lösungen, die gut aussehen, schnell laufen und im Alltag bestehen.
-          </p>
+          <p className="max-w-[34ch] text-ash md:text-right">{copy.services.lead}</p>
         </div>
 
         <ul className="border-t border-line">

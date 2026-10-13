@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { bricolage, hanken } from "@/lib/fonts";
-import { site, socials } from "@/lib/constants";
+import { copy, person, site, socials } from "@/lib/constants";
 import Providers from "@/components/layout/Providers";
 import Header from "@/components/layout/Header";
 import Cursor from "@/components/layout/Cursor";
@@ -10,7 +10,7 @@ import { introInlineScript } from "@/lib/intro";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Founder & Full-Stack-Entwickler in Wuppertal`,
+    default: `${site.name} | ${site.role} in ${site.city}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     locale: "de_DE",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} | Founder & Full-Stack-Entwickler`,
+    title: `${site.name} | ${site.role}`,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} | Founder & Full-Stack-Entwickler`,
+    title: `${site.name} | ${site.role}`,
     description: site.description,
   },
   robots: { index: true, follow: true },
@@ -45,10 +45,10 @@ const jsonLd = {
   name: site.name,
   url: site.url,
   jobTitle: site.role,
-  worksFor: { "@type": "Organization", name: "Gentle Webdesign", url: "https://www.gentlewebdesign.de/" },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "FOM Hochschule für Oekonomie & Management" },
-  address: { "@type": "PostalAddress", addressLocality: "Wuppertal", addressCountry: "DE" },
-  knowsAbout: ["Next.js", "React", "TypeScript", "C# .NET", "Azure", "Microsoft 365", "Webdesign", "SaaS"],
+  worksFor: { "@type": "Organization", ...person.worksFor },
+  alumniOf: { "@type": "CollegeOrUniversity", name: person.alumniOf },
+  address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "DE" },
+  knowsAbout: person.knowsAbout,
   sameAs: socials.map((s) => s.href),
 };
 
@@ -70,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="#main"
           className="fixed left-4 top-4 z-[200] -translate-y-24 rounded-full bg-bone px-4 py-2 text-ink focus:translate-y-0"
         >
-          Zum Inhalt springen
+          {copy.skipLink}
         </a>
         <Providers>
           <Header />

@@ -5,7 +5,7 @@ import { useLenis } from "lenis/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav, site, socials } from "@/lib/constants";
+import { copy, nav, site, socials } from "@/lib/constants";
 import { useIntro } from "@/hooks/useIntro";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { easeInOutQuart, easeOutExpo } from "@/lib/utils";
@@ -73,10 +73,10 @@ export default function Header() {
             href="/"
             onClick={onHome ? go("#top") : undefined}
             className="group flex items-center gap-3"
-            aria-label="Berk-Can Atesoglu, zur Startseite"
+            aria-label={copy.header.homeLabel}
           >
             <span className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-bone font-display text-sm font-bold text-ink">
-              <span className="transition-transform duration-500 group-hover:-translate-y-8">BA</span>
+              <span className="transition-transform duration-500 group-hover:-translate-y-8">{site.initials}</span>
               <span className="absolute translate-y-8 text-ember transition-transform duration-500 group-hover:translate-y-0">
                 ✦
               </span>
@@ -90,7 +90,7 @@ export default function Header() {
           </Link>
 
           <nav
-            aria-label="Hauptnavigation"
+            aria-label={copy.header.navLabel}
             className="hidden items-center gap-1 rounded-full border border-line bg-ink/40 p-1.5 backdrop-blur-xl lg:flex"
           >
             {nav.map((item) => (
@@ -113,7 +113,7 @@ export default function Header() {
                 onClick={go("#contact")}
                 className="inline-flex h-11 items-center rounded-full bg-ember px-5 text-sm font-semibold text-ink transition-colors hover:bg-gold"
               >
-                Projekt starten
+                {copy.header.cta}
               </a>
             </Magnetic>
             </div>
@@ -124,7 +124,7 @@ export default function Header() {
               aria-controls="site-menu"
               className="relative grid h-11 w-11 place-items-center rounded-full border border-line bg-ink/40 backdrop-blur-xl lg:hidden"
             >
-              <span className="sr-only">{open ? "Menü schließen" : "Menü öffnen"}</span>
+              <span className="sr-only">{open ? copy.header.menuClose : copy.header.menuOpen}</span>
               <span className="relative block h-3 w-5">
                 <motion.span
                   className="absolute left-0 top-0 h-px w-full bg-bone"
@@ -150,7 +150,7 @@ export default function Header() {
             exit={{ clipPath: "circle(0% at calc(100% - 38px) 38px)" }}
             transition={{ duration: 0.8, ease: easeInOutQuart }}
           >
-            <nav aria-label="Mobile Navigation">
+            <nav aria-label={copy.header.mobileNavLabel}>
               <ul className="space-y-1">
                 {nav.map((item, i) => (
                   <li key={item.href} className="overflow-hidden">

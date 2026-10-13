@@ -1,9 +1,10 @@
 import LegalPage from "@/components/layout/LegalPage";
+import { copy } from "@/lib/constants";
 
 export default function NotFound() {
   return (
-    <LegalPage title="Hier ist nur Asche.">
-      <p>Diese Seite gibt es nicht (mehr). Zurück zur Startseite, dort brennt es noch.</p>
+    <LegalPage title={copy.notFound.title}>
+      <p>{copy.notFound.text}</p>
     </LegalPage>
   );
 }
