@@ -96,19 +96,19 @@ html.lenis body {
   90% { transform: translate(-1%, 7%); }
 }
 
-/* Glut-Text: Verlauf, der langsam „glimmt" */
-.text-ember {
-  background: linear-gradient(100deg, var(--color-gold) 0%, var(--color-ember) 45%, #c2341b 70%, var(--color-gold) 100%);
-  background-size: 220% 100%;
+/* Glut-Text: fester Verlauf, der über filter langsam „glimmt".
+   Eigener Name — .text-ember ist Tailwinds Farb-Utility und wurde hier früher überschrieben. */
+.text-glow {
+  background: linear-gradient(100deg, var(--color-gold) 0%, var(--color-ember) 45%, #c2341b 75%, var(--color-ember) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: glow-shift 9s ease-in-out infinite;
+  animation: glow-breathe 4.5s ease-in-out infinite;
 }
 
-@keyframes glow-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+@keyframes glow-breathe {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.22) saturate(1.15); }
 }
 
 .outline-text {

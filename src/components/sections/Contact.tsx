@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
 import { useRef, useState } from "react";
 import Link from "next/link";
@@ -17,7 +17,10 @@ export default function Contact() {
   const my = useMotionValue(40);
   const sx = useSpring(mx, { stiffness: 80, damping: 20 });
   const sy = useSpring(my, { stiffness: 80, damping: 20 });
-  const glow = useMotionTemplate`radial-gradient(40rem 30rem at ${sx}% ${sy}%, rgba(255,106,43,0.28), transparent 70%)`;
+  // Ebene in Sektionsgröße per transform verschieben (Prozent = Anteil der eigenen, also der Sektionsgröße),
+  // statt den Verlauf in jedem Frame neu zu setzen
+  const glowX = useTransform(sx, (v) => `${v}%`);
+  const glowY = useTransform(sy, (v) => `${v}%`);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
   const bigX = useTransform(scrollYProgress, [0, 1], ["12%", "0%"]);
@@ -45,14 +48,19 @@ export default function Contact() {
         my.set(((e.clientY - r.top) / r.height) * 100);
       }}
     >
-      <motion.div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: glow }} />
+      <motion.div aria-hidden className="pointer-events-none absolute inset-0" style={{ x: glowX, y: glowY }}>
+        <div
+          className="absolute left-0 top-0 h-[60rem] w-[80rem] -translate-x-1/2 -translate-y-1/2"
+          style={{ background: "radial-gradient(40rem 30rem at center, rgba(255,106,43,0.28), transparent 70%)" }}
+        />
+      </motion.div>
 
       <div className="relative mx-auto max-w-[1600px]">
         <p className="mb-8 text-ash">Kontakt</p>
         <h2 id="contact-title" className="text-[clamp(3.2rem,11vw,11rem)] font-bold leading-[0.86] tracking-[-0.05em]">
           <Reveal>Bereit, etwas</Reveal>
           <Reveal delay={0.08}>
-            <span className="text-ember">zu entfachen?</span>
+            <span className="text-glow">zu entfachen?</span>
           </Reveal>
         </h2>
 

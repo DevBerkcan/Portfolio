@@ -32,14 +32,19 @@ export default function Journey() {
           />
           {journey.map((j, i) => (
             <li key={j.title} className="relative pb-16 last:pb-0 md:pb-24">
-              <motion.span
+              <span
                 aria-hidden
                 className="absolute -left-10 top-2 h-[15px] w-[15px] rounded-full border border-line bg-ink md:-left-16 md:h-[23px] md:w-[23px]"
-                initial={{ backgroundColor: "#0f0c0e", boxShadow: "0 0 0px rgba(255,106,43,0)" }}
-                whileInView={{ backgroundColor: "#ff6a2b", boxShadow: "0 0 28px rgba(255,106,43,0.8)" }}
-                viewport={{ margin: "-45% 0px -45% 0px" }}
-                transition={{ duration: 0.5 }}
-              />
+              >
+                {/* Glut-Ebene mit festem Schein — nur die Deckkraft wird animiert */}
+                <motion.span
+                  className="absolute -inset-px rounded-full bg-ember shadow-[0_0_28px_rgba(255,106,43,0.8)]"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ margin: "-45% 0px -45% 0px" }}
+                  transition={{ duration: 0.5 }}
+                />
+              </span>
               <motion.div
                 data-anim
                 initial={{ opacity: 0, x: 30 }}

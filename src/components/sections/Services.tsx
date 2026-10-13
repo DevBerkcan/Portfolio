@@ -48,38 +48,44 @@ export default function Services() {
             const isOpen = open === i;
             return (
               <li key={s.title} className="border-b border-line">
+                {/* Nur per Klick: Hover-Öffnen ließ die Zeilen unter dem Zeiger springen und kettenweise umschalten */}
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? -1 : i)}
-                  onMouseEnter={() => window.matchMedia("(pointer: fine)").matches && setOpen(i)}
                   aria-expanded={isOpen}
                   className="group flex w-full items-center justify-between gap-6 py-7 text-left md:py-9"
                 >
                   <span
-                    className={`font-display text-[clamp(1.9rem,5vw,4.5rem)] font-semibold leading-none tracking-[-0.03em] transition-[color,transform] duration-500 ${
-                      isOpen ? "translate-x-2 text-bone md:translate-x-6" : "text-bone/45 group-hover:text-bone/80"
+                    className={`font-display text-[clamp(1.9rem,5vw,4.5rem)] font-semibold leading-none tracking-[-0.03em] text-bone transition-[opacity,translate] duration-500 ${
+                      isOpen ? "translate-x-2 md:translate-x-6" : "opacity-45 group-hover:opacity-80"
                     }`}
                   >
                     {s.title}
                   </span>
                   <motion.span
-                    animate={{ rotate: isOpen ? 45 : 0, backgroundColor: isOpen ? "#ff6a2b" : "rgba(0,0,0,0)" }}
+                    animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.5, ease: easeOutExpo }}
-                    className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line text-2xl md:h-16 md:w-16"
+                    className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line text-2xl md:h-16 md:w-16"
                     aria-hidden
                   >
-                    +
+                    <motion.span
+                      className="absolute inset-0 rounded-full bg-ember"
+                      initial={false}
+                      animate={{ opacity: isOpen ? 1 : 0, scale: isOpen ? 1 : 0.6 }}
+                      transition={{ duration: 0.5, ease: easeOutExpo }}
+                    />
+                    <span className="relative">+</span>
                   </motion.span>
                 </button>
+                {/* Höhe schaltet ohne Animation um; der Inhalt wird per clip-path aufgedeckt */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
                       key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+                      animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                      exit={{ opacity: 0, transition: { duration: 0 } }}
                       transition={{ duration: 0.6, ease: easeOutExpo }}
-                      className="overflow-hidden"
                     >
                       <div className="grid gap-6 pb-10 md:grid-cols-[1fr_1fr] md:pl-6">
                         <p className="max-w-[48ch] text-lg leading-relaxed text-bone/80">{s.text}</p>

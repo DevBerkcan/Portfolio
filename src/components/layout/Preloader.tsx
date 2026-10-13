@@ -58,13 +58,14 @@ export default function Preloader() {
 
           <div className="flex flex-col items-center gap-4">
             <motion.span
-              className="font-display text-[clamp(4.5rem,18vw,14rem)] leading-none tracking-tight text-ember"
+              className="font-display text-[clamp(4.5rem,18vw,14rem)] leading-none tracking-tight"
               style={{ opacity: glow }}
               initial={{ y: 40, filter: "blur(12px)" }}
               animate={{ y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1.2, ease: easeOutExpo }}
             >
-              Ateş
+              {/* Eigene Ebene: die filter-Animation von .text-glow würde sonst den Blur-Einstieg überschreiben */}
+              <span className="text-glow">Ateş</span>
             </motion.span>
             <motion.span
               className="text-sm text-ash"
