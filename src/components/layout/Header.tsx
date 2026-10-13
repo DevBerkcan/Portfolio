@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav, site, socials } from "@/lib/constants";
 import { useIntro } from "@/hooks/useIntro";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { easeInOutQuart, easeOutExpo } from "@/lib/utils";
 import Magnetic from "@/components/motion/Magnetic";
 
@@ -37,19 +38,21 @@ export default function Header() {
     setHidden(v > prev && v > 200 && !open);
   });
 
+  useScrollLock(open);
+
   useEffect(() => {
-    if (open) lenis?.stop();
-    else lenis?.start();
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, lenis]);
+  }, [open]);
 
   const go = (href: string) => (e: React.MouseEvent) => {
     if (!onHome) return;
     e.preventDefault();
     setOpen(false);
-    lenis?.start();
+    // Die Menü-Sperre löst sich erst im nächsten Effect — ein gestopptes Lenis würde scrollTo ignorieren.
+    if (open) lenis?.start();
     if (lenis) lenis.scrollTo(href, { offset: 0, duration: 1.6 });
     else document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };

@@ -1,48 +1,41 @@
 "use client";
 
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "motion/react";
-import { useLenis } from "lenis/react";
 import { useEffect } from "react";
-import { useIntro } from "@/hooks/useIntro";
+import { introAlreadyPlayed, useIntro } from "@/hooks/useIntro";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { easeInOutQuart, easeOutExpo } from "@/lib/utils";
 
 /**
  * Zähler 0→100, glimmendes „Ateş", dann Vorhang nach oben direkt in den Hero.
- * Ohne JS oder bei Reduced Motion blendet CSS ihn schon vor der Hydration aus (data-preloader).
+ * Ohne JS, bei Reduced Motion oder wenn er in dieser Sitzung schon lief, blendet CSS ihn
+ * schon vor der Hydration aus (data-preloader).
  */
 export default function Preloader() {
   const { done, finish } = useIntro();
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const lenis = useLenis();
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => String(Math.round(v)).padStart(3, "0"));
   const glow = useTransform(count, [0, 100], [0.15, 1]);
   const bar = useTransform(count, [0, 100], [0, 1]);
 
+  useScrollLock(!done);
+
   useEffect(() => {
     if (done) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Schon gesehen (diese Sitzung) oder Reduced Motion: CSS hat ihn bereits ausgeblendet, direkt weiter.
+    if (introAlreadyPlayed() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       finish();
       return;
     }
-    lenis?.stop();
-    document.documentElement.style.overflow = "hidden";
     const controls = animate(count, 100, {
       duration: 1.7,
       ease: [0.65, 0, 0.35, 1],
       onComplete: finish,
     });
     return () => controls.stop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [done, lenis]);
-
-  useEffect(() => {
-    if (done) {
-      document.documentElement.style.overflow = "";
-      lenis?.start();
-    }
-  }, [done, lenis]);
+  }, [done, finish, count]);
 
   // Bei Reduced Motion komplett aushängen — ohne AnimatePresence läuft auch kein Exit-Vorhang.
   if (reduced) return null;

@@ -55,6 +55,11 @@
   }
 }
 
+/* Intro lief in dieser Sitzung schon (Inline-Script im Layout) — Preloader vor dem ersten Paint ausblenden */
+html[data-intro="played"] [data-preloader] {
+  display: none;
+}
+
 /* Lenis */
 html.lenis,
 html.lenis body {

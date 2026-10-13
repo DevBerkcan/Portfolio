@@ -5,6 +5,7 @@ import { site, socials } from "@/lib/constants";
 import Providers from "@/components/layout/Providers";
 import Header from "@/components/layout/Header";
 import Cursor from "@/components/layout/Cursor";
+import { introInlineScript } from "@/lib/intro";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -57,7 +58,11 @@ const noScriptCss =
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`${bricolage.variable} ${hanken.variable}`}>
+    // suppressHydrationWarning: das Intro-Script setzt data-intro auf <html>, bevor React hydriert.
+    <html lang="de" className={`${bricolage.variable} ${hanken.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introInlineScript }} />
+      </head>
       <body className="grain">
         <noscript dangerouslySetInnerHTML={{ __html: `<style>${noScriptCss}</style>` }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
