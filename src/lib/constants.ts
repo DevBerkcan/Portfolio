@@ -70,7 +70,7 @@ export const copy = {
     title: ["Ausgewählte", "Arbeiten"],
     /** Desktop: schmalere Spalte, daher mit Trennstrich */
     titleWide: ["Ausge-", "wählte", "Arbeiten"],
-    lead: "Eigene Produkte, Plattformen und Unternehmen.",
+    lead: "Eigene Produkte, Plattformen und Kundenprojekte.",
     scrollHint: "Scrollen Sie weiter, die Seite läuft seitwärts.",
     cursorLink: "Ansehen",
     cursorStatic: "Projekt",
@@ -144,7 +144,7 @@ export const stack = [
 ] as const;
 
 export const roles = [
-  { title: "Gründer", text: "Gentle Webdesign, GentleBook und VIPSHUTTLE24. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
+  { title: "Gründer", text: "Gentle Group mit Gentle Webdesign und GentleBook. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
   { title: "Entwickler", text: "Next.js und React im Frontend, C# .NET und Azure im Backend, Microsoft 365 für alles, was Teams im Alltag nutzen." },
   { title: "Student", text: "Betriebswirtschaft an der FOM in Wuppertal. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
 ] as const;
@@ -220,7 +220,7 @@ export const projects: Project[] = [
   {
     slug: "vipshuttle24",
     title: "VIPSHUTTLE24",
-    kind: "Eigenes Unternehmen",
+    kind: "Kundenprojekt",
     text: "Premium-Chauffeurservice in Wuppertal. Zweisprachige Website mit Flotte, Galerie und lokaler Suchmaschinenoptimierung.",
     stack: ["Next.js", "i18n", "SEO"],
     palette: ["#C9A45C", "#F3ECE6", "#0C0C0C"],
@@ -282,12 +282,6 @@ export const ventures: Venture[] = [
     text: "Das eigene Buchungssystem für Dienstleister — vom Salon bis zur Physiopraxis. Gebaut, um Termine, Team und Kundschaft an einem Ort zu halten.",
     href: "https://gentlebook.app",
     tone: "#6355E4",
-  },
-  {
-    name: "VIPSHUTTLE24",
-    role: "Inhaber",
-    text: "Premium-Chauffeurservice in Wuppertal. Diskret, pünktlich und mit einem Auftritt, der zum Anspruch der Fahrgäste passt.",
-    tone: "#C9A45C",
   },
   {
     name: "GentleCreativeHub",
