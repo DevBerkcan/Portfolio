@@ -28,6 +28,9 @@
     /* Auch auf html: mobile Browser verbreitern den Layout-Viewport sonst trotz body-Clip.
        clip statt hidden, damit kein Scroll-Container entsteht und position: sticky weiter greift. */
     overflow-x: clip;
+    /* Platz für die Scrollbar immer reservieren: die Scroll-Sperre (overflow: hidden) blendet sie sonst
+       aus und wieder ein, und die ganze Seite springt um ihre Breite (Layout-Shift beim Intro) */
+    scrollbar-gutter: stable;
   }
 
   body {

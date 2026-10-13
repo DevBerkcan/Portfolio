@@ -103,17 +103,23 @@ export default function Header() {
             href="/"
             onClick={onHome ? go("#top") : undefined}
             className="group flex items-center gap-3"
-            aria-label={copy.header.homeLabel}
           >
-            <span className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-bone font-display text-sm font-bold text-ink">
+            {/* Linkname = sichtbarer Name + „zur Startseite" (WCAG 2.5.3: sichtbarer Text muss im Namen stecken) */}
+            <span
+              aria-hidden
+              className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-bone font-display text-sm font-bold text-ink"
+            >
               <span className="transition-transform duration-500 group-hover:-translate-y-8">{site.initials}</span>
               <span className="absolute translate-y-8 text-ember transition-transform duration-500 group-hover:translate-y-0">
                 ✦
               </span>
             </span>
-            <span className="hidden text-sm leading-tight sm:block">
-              <span className="block font-medium">{site.name}</span>
-              <span className="block text-ash">
+            <span className="sr-only text-sm leading-tight sm:not-sr-only sm:block">
+              <span className="block font-medium">
+                {site.name}
+                <span className="sr-only">, {copy.header.homeSuffix}</span>
+              </span>
+              <span aria-hidden className="block text-ash">
                 {site.city}, <LocalTime />
               </span>
             </span>

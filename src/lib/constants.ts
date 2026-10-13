@@ -55,7 +55,8 @@ export const copy = {
     meaning: "türkisch für Feuer",
   },
   header: {
-    homeLabel: `${site.name}, zur Startseite`,
+    /** Nur für Screenreader, hinter dem Namen im Logo-Link */
+    homeSuffix: "zur Startseite",
     navLabel: "Hauptnavigation",
     mobileNavLabel: "Mobile Navigation",
     cta: "Projekt starten",
