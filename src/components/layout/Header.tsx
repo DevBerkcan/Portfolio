@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useLenis } from "lenis/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { copy, nav, site, socials } from "@/lib/constants";
@@ -40,11 +40,40 @@ export default function Header() {
 
   useScrollLock(open);
 
+  const headerRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Mobile-Menü: Fokus beim Öffnen hinein, Tab kreist zwischen Header und Menü, beim Schließen zurück zum Button
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const menu = menuRef.current;
+    const toggle = toggleRef.current;
+    // preventScroll: die Links fahren per Maske ein, sonst würde der Browser die Maske verschieben
+    menu?.querySelector<HTMLElement>("a[href]")?.focus({ preventScroll: true });
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = [headerRef.current, menuRef.current]
+        .flatMap((el) => (el ? [...el.querySelectorAll<HTMLElement>("a[href], button")] : []))
+        .filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const i = items.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey ? (i <= 0 ? items.length - 1 : i - 1) : i === items.length - 1 ? 0 : i + 1;
+      e.preventDefault();
+      items[next].focus({ preventScroll: true });
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      // Fokus nur zurückholen, wenn er im (gleich verschwindenden) Menü lag
+      const active = document.activeElement;
+      if (!active || active === document.body || menu?.contains(active)) toggle?.focus({ preventScroll: true });
+    };
   }, [open]);
 
   const go = (href: string) => (e: React.MouseEvent) => {
@@ -62,6 +91,7 @@ export default function Header() {
   return (
     <>
       <motion.header
+        ref={headerRef}
         data-anim
         className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-8 md:pt-6"
         initial={{ y: -120 }}
@@ -118,6 +148,7 @@ export default function Header() {
             </Magnetic>
             </div>
             <button
+              ref={toggleRef}
               type="button"
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
@@ -143,6 +174,7 @@ export default function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={menuRef}
             id="site-menu"
             className="fixed inset-0 z-40 flex flex-col justify-between bg-char px-6 pb-10 pt-28 lg:hidden"
             initial={{ clipPath: "circle(0% at calc(100% - 38px) 38px)" }}
