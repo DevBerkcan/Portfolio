@@ -103,8 +103,10 @@ export default function Hero() {
             <motion.p
               data-anim
               className="max-w-[40ch] text-base leading-relaxed text-bone/85 md:text-lg"
-              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-              animate={done ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
+              // Bewusst ohne opacity: 0 — so ist der Text schon beim ersten Paint (unter dem Preloader) da und
+              // zählt als LCP; nach dem Vorhang wird er nur noch scharfgestellt. Sonst LCP ≈ Intro-Ende (~4 s mobil).
+              initial={{ y: 24, filter: "blur(8px)" }}
+              animate={done ? { y: 0, filter: "blur(0px)" } : undefined}
               transition={{ delay: 0.9, duration: 1.2, ease: easeOutExpo }}
             >
               {copy.hero.intro}
