@@ -22,12 +22,15 @@ function ProjectCard({ project, index, progress }: { project: Project; index: nu
               target: "_blank",
               rel: "noreferrer",
               "data-cursor": copy.work.cursorLink,
-              // Ohne Label würde der Linkname aus den Texten der Vorschau-Grafik gebildet
-              "aria-label": `${project.title}, ${copy.work.linkLabel} ${copy.a11y.newTab}`,
             }
           : { "data-cursor": copy.work.cursorStatic })}
         className="relative block aspect-[16/11] overflow-hidden rounded-[1.75rem] bg-smoke p-4 md:aspect-[16/10] md:p-8"
       >
+        {/* Linkname als sr-only-Text statt aria-label: die Vorschau-Grafik ist ausgeblendet,
+            ein abweichendes aria-label würde gegen „Label in Name" (WCAG 2.5.3) verstoßen */}
+        {project.href && (
+          <span className="sr-only">{`${project.title}, ${copy.work.linkLabel} ${copy.a11y.newTab}`}</span>
+        )}
         <div
           aria-hidden
           className="absolute inset-0 opacity-60 transition-opacity duration-700 group-hover:opacity-100"
