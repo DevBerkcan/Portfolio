@@ -3,7 +3,6 @@
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { projects, type Project } from "@/lib/constants";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { easeOutExpo } from "@/lib/utils";
 import ProjectVisual from "@/components/ui/ProjectVisual";
 import Reveal from "@/components/motion/Reveal";
@@ -81,13 +80,16 @@ function Horizontal() {
     setActive(Math.min(projects.length, Math.max(1, Math.round(v * (projects.length - 1)) + 1)));
   });
 
+  // Vor der Messung dieselbe Rechnung in CSS (Kopfspalte + Karten + Abstände + pl-8 − Viewport),
+  // damit die Sektionshöhe nach der Hydration nicht springt. pr-[10vw] zählt Chrome nicht zur scrollWidth.
+  const estimate = `calc(100svh + 34vw + ${projects.length} * (min(62vw, 980px) + 6vw) + 2rem - 100vw)`;
+
   return (
     <section
-      id="work"
       ref={section}
       aria-labelledby="work-title"
       className="relative bg-ink"
-      style={{ height: `calc(100svh + ${distance}px)` }}
+      style={{ height: distance ? `calc(100svh + ${distance}px)` : estimate }}
     >
       <div className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden">
         <motion.div ref={track} className="flex items-center gap-[6vw] pl-8 pr-[10vw] will-change-transform" style={{ x }}>
@@ -121,7 +123,7 @@ function Horizontal() {
 
 function Vertical() {
   return (
-    <section id="work" aria-labelledby="work-title-m" className="bg-ink px-4 py-24">
+    <section aria-labelledby="work-title-m" className="bg-ink px-4 py-24">
       <h2 id="work-title-m" className="mb-6 text-[clamp(3rem,14vw,5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
         <Reveal>Ausgewählte</Reveal>
         <Reveal delay={0.06}>Arbeiten</Reveal>
@@ -145,7 +147,20 @@ function Vertical() {
   );
 }
 
+/**
+ * Beide Varianten kommen vom Server, CSS wählt per Breakpoint — kein Tausch nach der Hydration
+ * und damit kein Layout-Sprung. Die ausgeblendete Variante ist per display:none auch für
+ * Screenreader und Tab-Reihenfolge unsichtbar.
+ */
 export default function Work() {
-  const desktop = useMediaQuery("(min-width: 768px)", true);
-  return desktop ? <Horizontal /> : <Vertical />;
+  return (
+    <div id="work">
+      <div className="hidden md:block">
+        <Horizontal />
+      </div>
+      <div className="md:hidden">
+        <Vertical />
+      </div>
+    </div>
+  );
 }
