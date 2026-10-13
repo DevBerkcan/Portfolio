@@ -150,7 +150,7 @@ export const stack = [
 ] as const;
 
 export const roles = [
-  { title: "Gründer", text: "Gentle Group mit Gentle Webdesign und GentleBook. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
+  { title: "Gründer", text: "Gentle Webdesign und die daraus entstandene Gentle Group mit GentleBook. Ich weiß, wie es ist, Verantwortung für Umsatz und Kundschaft zu tragen." },
   { title: "Entwickler", text: "Next.js und React im Frontend, C# .NET und Azure im Backend, Microsoft 365 für alles, was Teams im Alltag nutzen." },
   { title: "Student", text: "Betriebswirtschaft an der FOM in Wuppertal. Damit jede technische Entscheidung auch eine wirtschaftliche ist." },
 ] as const;
@@ -278,7 +278,7 @@ export const ventures: Venture[] = [
   {
     name: "Gentle Webdesign",
     role: "Gründer",
-    text: "Agentur für Webdesign und Softwareentwicklung in Wuppertal. Next.js-Websites für Kunden, Full-Stack-Anwendungen mit .NET, Azure und Microsoft 365.",
+    text: "Agentur für Webdesign und Softwareentwicklung in Wuppertal und der Ursprung der Gentle Group. Next.js-Websites für Kunden, Full-Stack-Anwendungen mit .NET, Azure und Microsoft 365.",
     href: "https://www.gentlewebdesign.de/",
     tone: "#FF6A2B",
   },
