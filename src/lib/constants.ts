@@ -35,6 +35,10 @@ export const person = {
  */
 export const copy = {
   skipLink: "Zum Inhalt springen",
+  a11y: {
+    /** Nur für Screenreader, hinter Links mit target="_blank" */
+    newTab: "(öffnet in neuem Tab)",
+  },
   preloader: {
     word: "Ateş",
     meaning: "türkisch für Feuer",
@@ -74,6 +78,8 @@ export const copy = {
     scrollHint: "Scrollen Sie weiter, die Seite läuft seitwärts.",
     cursorLink: "Ansehen",
     cursorStatic: "Projekt",
+    /** Linkname der Projektkarte für Screenreader: „<Titel>, Website ansehen" */
+    linkLabel: "Website ansehen",
   },
   ventures: {
     title: ["Mehr als", "ein Job"],

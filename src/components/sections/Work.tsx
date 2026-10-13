@@ -16,7 +16,14 @@ function ProjectCard({ project, index, progress }: { project: Project; index: nu
     <article className="group relative flex w-full shrink-0 flex-col gap-6 md:w-[min(62vw,980px)]">
       <Wrapper
         {...(project.href
-          ? { href: project.href, target: "_blank", rel: "noreferrer", "data-cursor": copy.work.cursorLink }
+          ? {
+              href: project.href,
+              target: "_blank",
+              rel: "noreferrer",
+              "data-cursor": copy.work.cursorLink,
+              // Ohne Label würde der Linkname aus den Texten der Vorschau-Grafik gebildet
+              "aria-label": `${project.title}, ${copy.work.linkLabel} ${copy.a11y.newTab}`,
+            }
           : { "data-cursor": copy.work.cursorStatic })}
         className="relative block aspect-[16/11] overflow-hidden rounded-[1.75rem] bg-smoke p-4 md:aspect-[16/10] md:p-8"
       >
@@ -26,6 +33,7 @@ function ProjectCard({ project, index, progress }: { project: Project; index: nu
           style={{ background: `radial-gradient(90% 70% at 70% 100%, ${project.palette[0]}55, transparent 70%)` }}
         />
         <motion.div
+          aria-hidden
           className="relative h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] group-hover:-rotate-1"
           style={{ x: progress ? local : 0 }}
         >
@@ -97,11 +105,15 @@ function Horizontal() {
         <motion.div ref={track} className="flex items-center gap-[6vw] pl-8 pr-[10vw] will-change-transform" style={{ x }}>
           <div className="flex w-[34vw] shrink-0 flex-col justify-between self-stretch py-4">
             <h2 id="work-title" className="text-[clamp(3rem,7.5vw,8rem)] font-bold leading-[0.88] tracking-[-0.045em]">
-              {copy.work.titleWide.map((line, i) => (
-                <Reveal key={line} delay={i * 0.06}>
-                  {line}
-                </Reveal>
-              ))}
+              {/* Screenreader bekommen die ungetrennte Fassung, nicht „Ausge- wählte" */}
+              <span className="sr-only">{copy.work.title.join(" ")}</span>
+              <span aria-hidden>
+                {copy.work.titleWide.map((line, i) => (
+                  <Reveal key={line} delay={i * 0.06}>
+                    {line}
+                  </Reveal>
+                ))}
+              </span>
             </h2>
             <p className="max-w-[30ch] text-ash">
               {copy.work.lead} {copy.work.scrollHint}

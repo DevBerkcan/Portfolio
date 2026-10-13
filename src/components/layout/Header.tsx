@@ -177,6 +177,7 @@ export default function Header() {
               {socials.map((s) => (
                 <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="hover:text-bone">
                   {s.label}
+                  <span className="sr-only"> {copy.a11y.newTab}</span>
                 </a>
               ))}
             </motion.div>

@@ -35,7 +35,9 @@ function Card({ v, i, total, progress }: { v: Venture; i: number; total: number;
                 rel="noreferrer"
                 className="mt-6 inline-flex items-center gap-2 border-b border-bone/40 pb-1 text-sm transition-colors hover:border-ember hover:text-ember"
               >
+                <span className="sr-only">{v.name}, </span>
                 {copy.ventures.visit}
+                <span className="sr-only"> {copy.a11y.newTab}</span>
                 <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
                   <path d="M7 17 17 7M8 7h9v9" />
                 </svg>

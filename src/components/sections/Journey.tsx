@@ -14,8 +14,10 @@ export default function Journey() {
   return (
     <section id="journey" aria-labelledby="journey-title" className="relative bg-ink px-4 py-28 md:px-8 md:py-44">
       <div className="mx-auto grid max-w-[1600px] gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
-        <div className="md:sticky md:top-32 md:self-start">
-          <h2 id="journey-title" className="text-[clamp(3rem,8vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
+        {/* @container: die Überschrift richtet sich zusätzlich nach der Spaltenbreite (20cqi),
+            sonst schneidet die Reveal-Maske „Werdegang" zwischen 768 und ~1800 px rechts ab */}
+        <div className="@container md:sticky md:top-32 md:self-start">
+          <h2 id="journey-title" className="text-[clamp(3rem,min(8vw,20cqi),7.5rem)] font-bold leading-[0.9] tracking-[-0.04em]">
             <Reveal>{copy.journey.title}</Reveal>
           </h2>
           <p className="mt-6 max-w-[36ch] text-ash">{copy.journey.lead}</p>

@@ -98,6 +98,7 @@ export default function Contact() {
                     <a href={s.href} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 text-bone/85 hover:text-bone">
                       <span className="relative">
                         {s.label}
+                        <span className="sr-only"> {copy.a11y.newTab}</span>
                         <span className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ember transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
                       </span>
                     </a>

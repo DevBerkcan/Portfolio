@@ -11,10 +11,14 @@ type Props = {
   className?: string;
 };
 
-/** Zeichenweise Maskenanimation: Buchstaben steigen aus der Grundlinie auf. */
+/**
+ * Zeichenweise Maskenanimation: Buchstaben steigen aus der Grundlinie auf.
+ * Screenreader lesen den Text als Ganzes aus dem sr-only-Span, die Einzelbuchstaben sind versteckt.
+ */
 export default function SplitChars({ text, play, delay = 0, stagger = 0.035, className }: Props) {
   return (
-    <span aria-label={text} role="text" className={className}>
+    <span className={className}>
+      <span className="sr-only">{text}</span>
       <span aria-hidden className="inline-flex overflow-hidden pb-[0.08em] -mb-[0.08em]">
         {Array.from(text).map((char, i) => (
           <motion.span
@@ -26,7 +30,7 @@ export default function SplitChars({ text, play, delay = 0, stagger = 0.035, cla
             transition={{ delay: delay + i * stagger, duration: 1.1, ease: easeOutExpo }}
             style={{ transformOrigin: "0% 100%" }}
           >
-            {char === " " ? "\u00A0" : char}
+            {char === " " ? " " : char}
           </motion.span>
         ))}
       </span>

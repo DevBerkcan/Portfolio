@@ -52,6 +52,7 @@ export default function Services() {
                   type="button"
                   onClick={() => setOpen(isOpen ? -1 : i)}
                   aria-expanded={isOpen}
+                  aria-controls={`service-panel-${i}`}
                   className="group flex w-full items-center justify-between gap-6 py-7 text-left md:py-9"
                 >
                   <span
@@ -76,35 +77,38 @@ export default function Services() {
                     <span className="relative">+</span>
                   </motion.span>
                 </button>
-                {/* Höhe schaltet ohne Animation um; der Inhalt wird per clip-path aufgedeckt */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="content"
-                      initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-                      animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-                      exit={{ opacity: 0, transition: { duration: 0 } }}
-                      transition={{ duration: 0.6, ease: easeOutExpo }}
-                    >
-                      <div className="grid gap-6 pb-10 md:grid-cols-[1fr_1fr] md:pl-6">
-                        <p className="max-w-[48ch] text-lg leading-relaxed text-bone/80">{s.text}</p>
-                        <ul className="flex flex-wrap content-start gap-2 md:justify-end">
-                          {s.tags.map((t, ti) => (
-                            <motion.li
-                              key={t}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: 0.1 + ti * 0.05, duration: 0.5, ease: easeOutExpo }}
-                              className="rounded-full border border-line px-4 py-2 text-sm text-bone/80"
-                            >
-                              {t}
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Höhe schaltet ohne Animation um; der Inhalt wird per clip-path aufgedeckt.
+                    Der Wrapper bleibt immer im DOM, damit aria-controls ein Ziel hat. */}
+                <div id={`service-panel-${i}`}>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="content"
+                        initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+                        animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0 } }}
+                        transition={{ duration: 0.6, ease: easeOutExpo }}
+                      >
+                        <div className="grid gap-6 pb-10 md:grid-cols-[1fr_1fr] md:pl-6">
+                          <p className="max-w-[48ch] text-lg leading-relaxed text-bone/80">{s.text}</p>
+                          <ul className="flex flex-wrap content-start gap-2 md:justify-end">
+                            {s.tags.map((t, ti) => (
+                              <motion.li
+                                key={t}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 + ti * 0.05, duration: 0.5, ease: easeOutExpo }}
+                                className="rounded-full border border-line px-4 py-2 text-sm text-bone/80"
+                              >
+                                {t}
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </li>
             );
           })}
