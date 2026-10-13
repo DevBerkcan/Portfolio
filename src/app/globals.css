@@ -114,6 +114,15 @@ html.lenis body {
   50% { filter: brightness(1.22) saturate(1.15); }
 }
 
+/* ScrollWords: Wort i von n leuchtet auf, während der Absatz-Fortschritt --p von i/n nach (i+1)/n läuft */
+.scroll-word {
+  --t: clamp(0, calc(var(--p) * var(--n) - var(--i)), 1);
+  display: inline-block;
+  margin-right: 0.25em;
+  opacity: calc(0.14 + 0.86 * var(--t));
+  filter: blur(calc(6px * (1 - var(--t))));
+}
+
 .outline-text {
   color: transparent;
   -webkit-text-stroke: 1px rgb(243 236 230 / 0.35);
