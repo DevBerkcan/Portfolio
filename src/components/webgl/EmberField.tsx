@@ -119,19 +119,6 @@ void main() {
 }
 `;
 
-function compile(gl: WebGLRenderingContext, type: number, src: string): WebGLShader | null {
-  const s = gl.createShader(type);
-  if (!s) return null;
-  gl.shaderSource(s, src);
-  gl.compileShader(s);
-  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    console.warn(gl.getShaderInfoLog(s));
-    gl.deleteShader(s);
-    return null;
-  }
-  return s;
-}
-
 type Props = {
   progress?: MotionValue<number>;
   active: boolean;
@@ -156,105 +143,148 @@ export default function EmberField({ progress, active, className }: Props) {
       return;
     }
 
-    const vs = compile(gl, gl.VERTEX_SHADER, vert);
-    const fs = compile(gl, gl.FRAGMENT_SHADER, frag);
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
     const prog = gl.createProgram();
     if (!vs || !fs || !prog) {
       setFailed(true);
       return;
     }
+    gl.shaderSource(vs, vert);
+    gl.shaderSource(fs, frag);
+    gl.compileShader(vs);
+    gl.compileShader(fs);
     gl.attachShader(prog, vs);
     gl.attachShader(prog, fs);
     gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-      setFailed(true);
-      return;
-    }
-    gl.useProgram(prog);
 
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "aPos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-    const u = {
-      time: gl.getUniformLocation(prog, "uTime"),
-      res: gl.getUniformLocation(prog, "uRes"),
-      mouse: gl.getUniformLocation(prog, "uMouse"),
-      scroll: gl.getUniformLocation(prog, "uScroll"),
-      intro: gl.getUniformLocation(prog, "uIntro"),
-      power: gl.getUniformLocation(prog, "uPower"),
-    };
+    // Ohne diese Erweiterung blockiert die erste Statusabfrage den Main-Thread, bis der GPU-Compiler fertig ist —
+    // mitten in der Hydration. Mit ihr fragen wir pro Frame nach und lesen den Status erst, wenn er feststeht.
+    const parallel = gl.getExtension("KHR_parallel_shader_compile");
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const quality = coarse ? 0.6 : 0.85;
 
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5) * quality;
-      const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
-      const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-        gl.viewport(0, 0, w, h);
-      }
-      gl.uniform2f(u.res, w, h);
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-
-    const target = { x: 0.5, y: 0.28 };
-    const mouse = { x: 0.5, y: 0.28 };
-    const onMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      target.x = (e.clientX - rect.left) / rect.width;
-      target.y = 1 - (e.clientY - rect.top) / rect.height;
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-
-    let visible = true;
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-    });
-    io.observe(canvas);
-
     let raf = 0;
-    let intro = 0;
-    let power = 0;
-    const start = performance.now();
+    let buf: WebGLBuffer | null = null;
+    let cleanupRun = () => {};
 
-    const frame = (now: number) => {
+    const run = () => {
+      gl.useProgram(prog);
+      buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(prog, "aPos");
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+      const u = {
+        time: gl.getUniformLocation(prog, "uTime"),
+        res: gl.getUniformLocation(prog, "uRes"),
+        mouse: gl.getUniformLocation(prog, "uMouse"),
+        scroll: gl.getUniformLocation(prog, "uScroll"),
+        intro: gl.getUniformLocation(prog, "uIntro"),
+        power: gl.getUniformLocation(prog, "uPower"),
+      };
+
+      // Reduced Motion: ein Standbild, neu gezeichnet nur bei Größenänderung oder Intro-Ende
+      let dirty = true;
+
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5) * quality;
+        const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+        const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+        gl.uniform2f(u.res, w, h);
+        dirty = true;
+      };
+      resize();
+      const ro = new ResizeObserver(resize);
+      ro.observe(canvas);
+
+      const target = { x: 0.5, y: 0.28 };
+      const mouse = { x: 0.5, y: 0.28 };
+      const onMove = (e: PointerEvent) => {
+        const rect = canvas.getBoundingClientRect();
+        target.x = (e.clientX - rect.left) / rect.width;
+        target.y = 1 - (e.clientY - rect.top) / rect.height;
+      };
+      // Die Hitzequelle folgt dem Cursor — bei Reduced Motion bleibt sie stehen
+      if (!reduced) window.addEventListener("pointermove", onMove, { passive: true });
+
+      let visible = true;
+      const io = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+      });
+      io.observe(canvas);
+
+      let intro = 0;
+      let power = 0;
+      let wasActive = false;
+      const t0 = performance.now();
+
+      const frame = (now: number) => {
+        raf = requestAnimationFrame(frame);
+        if (!visible || document.hidden) return;
+        const isActive = activeRef.current;
+        if (reduced) {
+          if (isActive !== wasActive) dirty = true;
+          wasActive = isActive;
+          if (!dirty) return;
+          dirty = false;
+          intro = power = isActive ? 1 : 0;
+          gl.uniform1f(u.time, 8);
+          gl.uniform1f(u.scroll, 0);
+        } else {
+          mouse.x += (target.x - mouse.x) * 0.06;
+          mouse.y += (target.y - mouse.y) * 0.06;
+          if (isActive) {
+            intro += (1 - intro) * 0.025;
+            power += (1 - power) * 0.012;
+          }
+          gl.uniform1f(u.time, (now - t0) / 1000);
+          gl.uniform1f(u.scroll, progress ? Math.min(1, Math.max(0, progress.get())) : 0);
+        }
+        gl.uniform2f(u.mouse, mouse.x, mouse.y);
+        gl.uniform1f(u.intro, intro);
+        gl.uniform1f(u.power, power);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
       raf = requestAnimationFrame(frame);
-      if (!visible || document.hidden) return;
-      const t = (now - start) / 1000;
-      mouse.x += (target.x - mouse.x) * 0.06;
-      mouse.y += (target.y - mouse.y) * 0.06;
-      if (activeRef.current) {
-        intro += (1 - intro) * 0.025;
-        power += (1 - power) * 0.012;
-      }
-      gl.uniform1f(u.time, reduced ? 8 : t);
-      gl.uniform2f(u.mouse, mouse.x, mouse.y);
-      gl.uniform1f(u.scroll, progress ? Math.min(1, Math.max(0, progress.get())) : 0);
-      gl.uniform1f(u.intro, intro);
-      gl.uniform1f(u.power, power);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      cleanupRun = () => {
+        ro.disconnect();
+        io.disconnect();
+        window.removeEventListener("pointermove", onMove);
+      };
     };
-    raf = requestAnimationFrame(frame);
+
+    const whenLinked = () => {
+      if (parallel && !gl.getProgramParameter(prog, parallel.COMPLETION_STATUS_KHR)) {
+        raf = requestAnimationFrame(whenLinked);
+        return;
+      }
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.warn(gl.getShaderInfoLog(vs), gl.getShaderInfoLog(fs), gl.getProgramInfoLog(prog));
+        setFailed(true);
+        return;
+      }
+      run();
+    };
+    whenLinked();
 
     return () => {
       cancelAnimationFrame(raf);
-      ro.disconnect();
-      io.disconnect();
-      window.removeEventListener("pointermove", onMove);
+      cleanupRun();
       gl.deleteProgram(prog);
       gl.deleteShader(vs);
       gl.deleteShader(fs);
-      gl.deleteBuffer(buf);
+      if (buf) gl.deleteBuffer(buf);
     };
   }, [progress]);
 
