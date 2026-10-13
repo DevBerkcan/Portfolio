@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import { useLenis } from "lenis/react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { copy, projects, type Project } from "@/lib/constants";
 import { easeOutExpo } from "@/lib/utils";
@@ -65,11 +66,13 @@ function Horizontal() {
   const track = useRef<HTMLDivElement>(null);
   const [distance, setDistance] = useState(0);
   const [active, setActive] = useState(1);
+  const lenis = useLenis();
 
   useLayoutEffect(() => {
     const measure = () => {
       if (!track.current) return;
-      setDistance(Math.max(0, track.current.scrollWidth - window.innerWidth));
+      // clientWidth statt innerWidth: sonst endet die letzte Karte unter der Scrollbar
+      setDistance(Math.max(0, track.current.scrollWidth - document.documentElement.clientWidth));
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -90,8 +93,25 @@ function Horizontal() {
     setActive(Math.min(projects.length, Math.max(1, Math.round(v * (projects.length - 1)) + 1)));
   });
 
+  // Tastatur: fokussierte Karte ins Bild holen. Die Spur verschiebt sich um genau so viele Pixel,
+  // wie die Seite innerhalb der Sektion gescrollt ist — also zur gewünschten Verschiebung scrollen.
+  const onFocus = (e: React.FocusEvent) => {
+    const card = (e.target as HTMLElement).closest("article");
+    if (!card || !section.current || !distance) return;
+    const shift = Math.min(distance, Math.max(0, card.offsetLeft - window.innerWidth * 0.1));
+    const el = section.current;
+    // Erst im nächsten Frame: der Browser scrollt beim Fokussieren selbst noch vertikal zum Element
+    // und würde einen sofortigen Scroll wieder überschreiben.
+    requestAnimationFrame(() => {
+      const top = el.getBoundingClientRect().top + window.scrollY + shift;
+      if (lenis) lenis.scrollTo(top, { immediate: true });
+      else window.scrollTo({ top });
+    });
+  };
+
   // Vor der Messung dieselbe Rechnung in CSS (Kopfspalte + Karten + Abstände + pl-8 − Viewport),
   // damit die Sektionshöhe nach der Hydration nicht springt. pr-[10vw] zählt Chrome nicht zur scrollWidth.
+  // 100vw enthält die Scrollbar, die Messung nicht — die Schätzung liegt daher bis zu ~15 px zu niedrig.
   const estimate = `calc(100svh + 34vw + ${projects.length} * (min(62vw, 980px) + 6vw) + 2rem - 100vw)`;
 
   return (
@@ -101,8 +121,14 @@ function Horizontal() {
       className="relative bg-ink"
       style={{ height: distance ? `calc(100svh + ${distance}px)` : estimate }}
     >
-      <div className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden">
-        <motion.div ref={track} className="flex items-center gap-[6vw] pl-8 pr-[10vw] will-change-transform" style={{ x }}>
+      {/* overflow-clip statt hidden: sonst scrollt der Browser beim Fokussieren einer Karte diesen Container seitwärts */}
+      <div className="sticky top-0 flex h-svh flex-col justify-center overflow-clip">
+        <motion.div
+          ref={track}
+          onFocus={onFocus}
+          className="flex items-center gap-[6vw] pl-8 pr-[10vw] will-change-transform"
+          style={{ x }}
+        >
           <div className="flex w-[34vw] shrink-0 flex-col justify-between self-stretch py-4">
             <h2 id="work-title" className="text-[clamp(3rem,7.5vw,8rem)] font-bold leading-[0.88] tracking-[-0.045em]">
               {/* Screenreader bekommen die ungetrennte Fassung, nicht „Ausge- wählte" */}
