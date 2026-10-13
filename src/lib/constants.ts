@@ -15,12 +15,23 @@ export const site = {
   lastName: "Atesoglu",
   initials: "BA",
   url: "https://www.berkcanatesoglu.de",
-  // TODO: echte Kontaktadresse eintragen
   email: "hallo@berkcanatesoglu.de",
   city,
   role: "Founder & Full-Stack-Entwickler",
   description: `Berk-Can Atesoglu — Founder von Gentle Webdesign und Full-Stack-Entwickler in ${city}. Websites, Web-Apps, SaaS und Cloud-Lösungen mit Next.js, C# .NET, Azure und Microsoft 365.`,
 } as const;
+
+/** Pflichtangaben für das Impressum (§ 5 DDG). */
+export const imprint = {
+  name: site.name,
+  street: "Girardetstraße 17",
+  zipCity: "42109 Wuppertal",
+  email: site.email,
+  // TODO: zweiten schnellen Kontaktweg ergänzen (z. B. Telefon) — § 5 DDG verlangt neben der E-Mail eine weitere direkte Kontaktmöglichkeit
+  phone: null as string | null,
+  // TODO: USt-IdNr. eintragen, falls vorhanden (sonst null lassen)
+  vatId: null as string | null,
+};
 
 /** Strukturierte Daten (JSON-LD) für Suchmaschinen. */
 export const person = {
@@ -105,6 +116,11 @@ export const copy = {
   },
   legal: {
     imprint: "Impressum",
+    imprintProvider: "Angaben gemäß § 5 DDG",
+    imprintContact: "Kontakt",
+    email: "E-Mail",
+    phone: "Telefon",
+    vatId: "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG",
     privacy: "Datenschutz",
     privacyTitle: "Datenschutzerklärung",
     back: "Zurück zur Startseite",

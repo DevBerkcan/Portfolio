@@ -16,8 +16,7 @@ npm run build && npm start
 Alle Texte, Links, Projekte, Unternehmen und Werdegang: `src/lib/constants.ts`.
 
 **Offene TODOs**
-- `site.email` in `src/lib/constants.ts` (aktuell Platzhalter)
-- Impressum: `src/app/impressum/page.tsx`
+- Impressum: zweiter Kontaktweg (Telefon) und ggf. USt-IdNr. in `imprint` (`src/lib/constants.ts`)
 - Datenschutz: `src/app/datenschutz/page.tsx`
 - Werdegang: Zeitangaben in `journey` ergänzen
 - Optional: echte Projekt-Screenshots statt generierter Vorschauen (`src/components/ui/ProjectVisual.tsx`)
